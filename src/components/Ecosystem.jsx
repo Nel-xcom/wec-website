@@ -6,16 +6,28 @@ import { useState, useRef, useEffect } from 'react';
 const NeuralExchange = () => (
     <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
         <svg viewBox="0 0 200 200" className="w-full h-full">
-            <motion.circle cx="100" cy="100" r="40" stroke="#D5F1FF" strokeWidth="0.5" fill="none" strokeDasharray="4 4" animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear" }} />
-            <motion.path d="M60,100 A40,40 0 0,1 140,100" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1.5, ease: "easeInOut" }} />
-            <motion.path d="M135,95 L140,100 L135,105" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 1.4, duration: 0.5 }} />
-            <motion.path d="M140,100 A40,40 0 0,1 60,100" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }} />
-            <motion.path d="M65,105 L60,100 L65,95" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 1.9, duration: 0.5 }} />
-            <motion.circle cx="100" cy="100" r="10" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ duration: 1, type: "spring" }} />
-            <motion.g animate={{ rotate: 360 }} transition={{ duration: 6, repeat: Infinity, ease: "linear" }} style={{ originX: "100px", originY: "100px" }}>
+            {/* Main circle - CSS animation */}
+            <circle
+                cx="100"
+                cy="100"
+                r="40"
+                stroke="#D5F1FF"
+                strokeWidth="0.5"
+                fill="none"
+                strokeDasharray="4 4"
+                className="svg-spin-slow"
+                style={{ transformOrigin: '100px 100px' }}
+            />
+            <motion.path d="M60,100 A40,40 0 0,1 140,100" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.5, ease: "easeInOut" }} />
+            <motion.path d="M135,95 L140,100 L135,105" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 1.4, duration: 0.5 }} />
+            <motion.path d="M140,100 A40,40 0 0,1 60,100" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.5, ease: "easeInOut", delay: 0.5 }} />
+            <motion.path d="M65,105 L60,100 L65,95" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 1.9, duration: 0.5 }} />
+            <motion.circle cx="100" cy="100" r="10" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 1, type: "spring" }} />
+            {/* Rotating dots - CSS animation */}
+            <g className="svg-spin-medium" style={{ transformOrigin: '100px 100px' }}>
                 <circle cx="100" cy="60" r="2" fill="#D5F1FF" />
                 <circle cx="100" cy="140" r="2" fill="#D5F1FF" />
-            </motion.g>
+            </g>
         </svg>
     </div>
 );
@@ -25,14 +37,21 @@ const BioChart = () => (
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <line x1="40" y1="160" x2="160" y2="160" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.3" />
             <line x1="40" y1="40" x2="40" y2="160" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.3" />
-            <motion.path d="M40,160 Q80,140 100,100 T160,50" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 2.5, ease: "easeInOut" }} />
+            <motion.path d="M40,160 Q80,140 100,100 T160,50" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 2.5, ease: "easeInOut" }} />
             {[0, 1, 2].map((i) => (
-                <motion.circle key={i} cx={[40, 100, 160][i]} cy={[160, 100, 50][i]} r="3" fill="#D5F1FF" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 0.5 + i * 0.5, type: "spring" }} />
+                <motion.circle key={i} cx={[40, 100, 160][i]} cy={[160, 100, 50][i]} r="3" fill="#D5F1FF" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5 + i * 0.5, type: "spring" }} />
             ))}
-            {Array.from({ length: 5 }).map((_, i) => (
-                <motion.div key={i} initial={{ opacity: 0, y: 0 }} animate={{ opacity: [0, 0.5, 0], y: -50 }} transition={{ duration: 3, delay: i * 0.8, repeat: Infinity }}>
-                    <circle cx={40 + i * 30} cy={160} r="1" fill="#D5F1FF" />
-                </motion.div>
+            {/* PERFORMANCE: Fixed - using motion.circle directly instead of motion.div wrapper, reduced from 5 to 3 particles */}
+            {[0, 1, 2].map((i) => (
+                <circle
+                    key={`particle-${i}`}
+                    cx={40 + i * 40}
+                    cy={160}
+                    r="1"
+                    fill="#D5F1FF"
+                    className="svg-particle"
+                    style={{ animationDelay: `${i * 0.8}s` }}
+                />
             ))}
         </svg>
     </div>
@@ -56,15 +75,25 @@ const NetworkUser = () => (
 const NeuralMedia = () => (
     <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
         <svg viewBox="0 0 200 200" className="w-full h-full">
-            <motion.rect x="50" y="60" width="100" height="80" rx="10" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 1 }} />
-            <motion.path d="M90,85 L120,100 L90,115 Z" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ scale: 0 }} whileInView={{ scale: 1 }} transition={{ delay: 0.5, type: "spring" }} />
-            {/* Sparks */}
+            <motion.rect x="50" y="60" width="100" height="80" rx="10" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} />
+            <motion.path d="M90,85 L120,100 L90,115 Z" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, type: "spring" }} />
+            {/* Sparks - converted to CSS */}
             {[0, 1, 2].map(i => (
-                <motion.line key={i} x1="100" y1="50" x2="100" y2="30" stroke="#D5F1FF" strokeWidth="1"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: [0, 1, 0], y: -20 }}
-                    transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
-                    style={{ rotate: (i - 1) * 30, originY: "50px" }}
+                <line
+                    key={i}
+                    x1="100"
+                    y1="50"
+                    x2="100"
+                    y2="30"
+                    stroke="#D5F1FF"
+                    strokeWidth="1"
+                    className="svg-particle"
+                    style={{
+                        transformOrigin: '100px 50px',
+                        transform: `rotate(${(i - 1) * 30}deg)`,
+                        animationDelay: `${i * 0.3}s`,
+                        animationDuration: '2s'
+                    }}
                 />
             ))}
         </svg>
@@ -74,16 +103,43 @@ const NeuralMedia = () => (
 const NeuralValuation = () => (
     <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
         <svg viewBox="0 0 200 200" className="w-full h-full">
-            <motion.path d="M100,40 L100,160 M60,160 L140,160" stroke="#D5F1FF" strokeWidth="1" opacity="0.3" />
-            {/* Scale Balance */}
-            <motion.path d="M60,120 L140,80" stroke="#D5F1FF" strokeWidth="1"
-                animate={{ d: ["M60,120 L140,80", "M60,80 L140,120", "M60,120 L140,80"] }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            />
-            <motion.circle cx="100" cy="100" r="4" fill="#D5F1FF" />
-            {/* Nodes */}
-            <motion.circle cx="60" cy="120" r="15" stroke="#D5F1FF" strokeWidth="1" fill="none" animate={{ cy: [120, 80, 120] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
-            <motion.circle cx="140" cy="80" r="15" stroke="#D5F1FF" strokeWidth="1" fill="none" animate={{ cy: [80, 120, 80] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
+            <path d="M100,40 L100,160 M60,160 L140,160" stroke="#D5F1FF" strokeWidth="1" opacity="0.3" />
+            {/* Scale Balance - simplified to oscillating circles only (path animation not well supported in CSS) */}
+            <line x1="60" y1="100" x2="140" y2="100" stroke="#D5F1FF" strokeWidth="1" opacity="0.5" />
+            <circle cx="100" cy="100" r="4" fill="#D5F1FF" />
+            {/* Nodes - CSS animated */}
+            <circle
+                cx="60"
+                r="15"
+                stroke="#D5F1FF"
+                strokeWidth="1"
+                fill="none"
+                className="svg-oscillate"
+                style={{ cy: 120, animationDuration: '6s' }}
+            >
+                <animate
+                    attributeName="cy"
+                    values="120;80;120"
+                    dur="6s"
+                    repeatCount="indefinite"
+                />
+            </circle>
+            <circle
+                cx="140"
+                r="15"
+                stroke="#D5F1FF"
+                strokeWidth="1"
+                fill="none"
+                className="svg-oscillate"
+                style={{ cy: 80, animationDuration: '6s' }}
+            >
+                <animate
+                    attributeName="cy"
+                    values="80;120;80"
+                    dur="6s"
+                    repeatCount="indefinite"
+                />
+            </circle>
         </svg>
     </div>
 );
@@ -91,13 +147,30 @@ const NeuralValuation = () => (
 const NeuralConnect = () => (
     <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
         <svg viewBox="0 0 200 200" className="w-full h-full">
-            <motion.circle cx="100" cy="100" r="60" stroke="#D5F1FF" strokeWidth="0.5" fill="none" opacity="0.3" animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
-            {/* Mesh */}
-            {[0, 60, 120, 180, 240, 300].map((deg, i) => (
-                <motion.g key={i} animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear", delay: -i }} style={{ originX: "100px", originY: "100px" }}>
+            <circle
+                cx="100"
+                cy="100"
+                r="60"
+                stroke="#D5F1FF"
+                strokeWidth="0.5"
+                fill="none"
+                opacity="0.3"
+                className="svg-spin-very-slow"
+                style={{ transformOrigin: '100px 100px' }}
+            />
+            {/* Mesh - Reduced from 6 to 4 nodes for performance */}
+            {[0, 90, 180, 270].map((deg, i) => (
+                <g
+                    key={i}
+                    className="svg-spin-very-slow"
+                    style={{
+                        transformOrigin: '100px 100px',
+                        animationDelay: `${-i * 1}s`
+                    }}
+                >
                     <circle cx="100" cy="40" r="2" fill="#D5F1FF" />
                     <line x1="100" y1="40" x2="100" y2="100" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.5" />
-                </motion.g>
+                </g>
             ))}
             <circle cx="100" cy="100" r="10" fill="#D5F1FF" opacity="0.8" />
         </svg>
@@ -175,11 +248,11 @@ const DATA_CARDS = [
 const INFINITE_CARDS = [...DATA_CARDS, ...DATA_CARDS, ...DATA_CARDS, ...DATA_CARDS];
 
 export default function Ecosystem() {
-    // CAROUSEL LOGIC
     const x = useMotionValue(0);
-    const containerRef = useRef(null);
     const [isHovered, setIsHovered] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
+    const [isInView, setIsInView] = useState(false); // PERFORMANCE: Track viewport visibility
+    const carouselRef = useRef(null);
 
     // Approximate width of card (400px min-w + 32px mx-4 = 432px). 
     // Total set width = 6 * 432 = 2592.
@@ -193,8 +266,23 @@ export default function Ecosystem() {
         x.set(-ONE_SET_WIDTH);
     }, [ONE_SET_WIDTH, x]);
 
+    // PERFORMANCE: Intersection Observer to pause animation when off-screen
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsInView(entry.isIntersecting),
+            { threshold: 0.1, root: null }
+        );
+
+        if (carouselRef.current) {
+            observer.observe(carouselRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
+
     useAnimationFrame((time, delta) => {
-        if (isHovered || isDragging) return;
+        // PERFORMANCE: Only animate when visible in viewport
+        if (!isInView || isHovered || isDragging) return;
 
         let moveBy = 0.5; // Speed adjustment (pixels per frame)
 
@@ -212,7 +300,7 @@ export default function Ecosystem() {
     });
 
     return (
-        <section id="ecosystem" className="w-full py-40 flex flex-col items-center relative z-10 w-full overflow-hidden">
+        <section ref={carouselRef} id="ecosystem" className="w-full py-40 flex flex-col items-center relative z-10 w-full overflow-hidden">
 
             <motion.div
                 className="mb-12 text-center px-6"
