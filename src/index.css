@@ -101,177 +101,25 @@ body {
 }
 
 @keyframes drift {
-
-  0%,
-  100% {
-    transform: translateX(0) translateY(0);
-  }
-
-  50% {
-    transform: translateX(-20px) translateY(-10px);
-  }
-}
-
-/* Pulse for orb-2 */
-@keyframes drift-reverse {
-
-  0%,
-  100% {
-    transform: translateX(0) translateY(0);
-  }
-
-  50% {
-    transform: translateX(20px) translateY(10px);
-  }
-}
-
-/* ============================================
-   PERFORMANCE: CSS ANIMATIONS FOR SVG ELEMENTS
-   Replacing Framer Motion infinite loops
-   ============================================ */
-
-/* Rotation animations - GPU accelerated */
-@keyframes svg-rotate-slow {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes svg-rotate-medium {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes svg-rotate-fast {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Oscillation animations */
-@keyframes svg-oscillate-y {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes svg-oscillate-y-alt {
-
-  0%,
-  100% {
-    cy: 120;
-  }
-
-  50% {
-    cy: 80;
-  }
-}
-
-@keyframes svg-oscillate-y-alt-reverse {
-
-  0%,
-  100% {
-    cy: 80;
-  }
-
-  50% {
-    cy: 120;
-  }
-}
-
-/* Fade pulse */
-@keyframes svg-fade-pulse {
-
-  0%,
-  100% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-}
-
-/* Particle rise effect */
-@keyframes svg-particle-rise {
   0% {
-    opacity: 0;
-    transform: translateY(0);
-  }
-
-  50% {
-    opacity: 0.5;
-    transform: translateY(-50px);
+    transform: translate(0, 0) scale(1);
   }
 
   100% {
-    opacity: 0;
-    transform: translateY(-50px);
+    transform: translate(30px, -30px) scale(1.05);
   }
+
+  /* Reduced movement */
 }
 
-/* Balance path animation */
-@keyframes svg-balance {
+@keyframes drift-reverse {
+  0% {
+    transform: translate(0, 0) scale(1.05);
+  }
 
-  0%,
   100% {
-    d: path("M60,120 L140,80");
+    transform: translate(-30px, 30px) scale(1);
   }
 
-  50% {
-    d: path("M60,80 L140,120");
-  }
-}
-
-/* Utility classes for SVG animations */
-.svg-spin-slow {
-  animation: svg-rotate-slow 20s linear infinite;
-  transform-origin: center;
-  will-change: transform;
-}
-
-.svg-spin-medium {
-  animation: svg-rotate-medium 6s linear infinite;
-  transform-origin: center;
-  will-change: transform;
-}
-
-.svg-spin-very-slow {
-  animation: svg-rotate-slow 30s linear infinite;
-  transform-origin: center;
-  will-change: transform;
-}
-
-.svg-particle {
-  animation: svg-particle-rise 3s ease-in-out infinite;
-  will-change: opacity, transform;
-}
-
-.svg-fade-pulse {
-  animation: svg-fade-pulse 3s ease-in-out infinite;
-  will-change: opacity;
-}
-
-.svg-oscillate {
-  animation: svg-oscillate-y 6s ease-in-out infinite;
-  will-change: transform;
+  /* Reduced movement */
 }
