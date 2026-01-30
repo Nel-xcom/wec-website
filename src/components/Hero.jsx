@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 
-export default function Hero() {
+function Hero() {
     const ref = useRef(null);
 
     // Scroll dissolve for text
@@ -16,7 +16,7 @@ export default function Hero() {
     return (
         <motion.section
             ref={ref}
-            style={{ opacity, filter, scale }}
+            style={{ opacity, filter, scale, willChange: 'transform, filter, opacity' }}
             className="relative w-full min-h-screen flex flex-col justify-center items-center px-4"
         >
 
@@ -62,3 +62,6 @@ export default function Hero() {
         </motion.section>
     );
 }
+
+// PERFORMANCE: Memoize to prevent re-renders
+export default memo(Hero);

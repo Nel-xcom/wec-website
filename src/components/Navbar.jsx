@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import logoWhite from '../assets/logos/logo-white.png';
 
 // --- DECODING TEXT UTILITY ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-const DecodingText = ({ text }) => {
+const DecodingText = memo(({ text }) => {
     const [display, setDisplay] = useState(text);
     const intervalRef = useRef(null);
 
@@ -35,15 +35,18 @@ const DecodingText = ({ text }) => {
             {display}
         </span>
     );
-};
+});
 
-export default function Navbar() {
+DecodingText.displayName = 'DecodingText';
+
+function Navbar() {
     return (
         <motion.nav
             className="fixed top-8 left-1/2 -translate-x-1/2 z-50 w-full flex justify-center px-4"
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.5, duration: 1, type: "spring" }}
+            style={{ willChange: 'transform, opacity' }}
         >
             {/* GLASS CAPSULE - BOTTOM ALIGNED LINKS */}
             <div className="flex items-end gap-10 md:gap-16 px-10 pb-[15px] pt-2 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] h-20 md:h-24">
@@ -58,7 +61,7 @@ export default function Navbar() {
                 {/* Logo Center */}
                 <div className="flex h-full items-center">
                     <Link to="/">
-                        <img src={logoWhite} alt="WEC" className="h-14 md:h-16 w-auto opacity-90 hover:opacity-100 transition-opacity hover:scale-105 duration-300" />
+                        <img src={logoWhite} alt="WEC" className="h-14 md:h-16 w-auto opacity-90 hover:opacity-100 transition-opacity hover:scale-105 duration-300" loading="lazy" />
                     </Link>
                 </div>
 
@@ -73,3 +76,6 @@ export default function Navbar() {
         </motion.nav>
     );
 }
+
+// PERFORMANCE: Memoize to prevent re-renders
+export default memo(Navbar);

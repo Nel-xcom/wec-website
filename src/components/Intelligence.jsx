@@ -174,6 +174,9 @@ export default function Intelligence() {
                                         src={FEATURES[selectedIndex].image}
                                         alt={FEATURES[selectedIndex].title}
                                         className="relative w-full h-full object-contain drop-shadow-[0_0_30px_rgba(56,189,248,0.3)] scale-[1.35]"
+                                        loading="lazy"
+                                        decoding="async"
+                                        style={{ willChange: 'transform' }}
                                     />
                                 </div>
 

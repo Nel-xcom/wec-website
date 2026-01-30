@@ -43,15 +43,47 @@ function App() {
       touchMultiplier: 2,
     });
 
+    let rafId = null;
+    let lastScrollTime = Date.now();
+    let isIdle = false;
+
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+
+      // PERFORMANCE: Pause RAF when idle (no scroll for 100ms)
+      const now = Date.now();
+      if (lenis.velocity === 0) {
+        if (!isIdle && now - lastScrollTime > 100) {
+          isIdle = true;
+          // Stop the loop when idle
+          return;
+        }
+      } else {
+        lastScrollTime = now;
+        isIdle = false;
+      }
+
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    // Resume RAF on scroll events
+    const resumeRAF = () => {
+      if (isIdle) {
+        isIdle = false;
+        rafId = requestAnimationFrame(raf);
+      }
+    };
+
+    window.addEventListener('wheel', resumeRAF, { passive: true });
+    window.addEventListener('touchstart', resumeRAF, { passive: true });
+
+    rafId = requestAnimationFrame(raf);
 
     return () => {
       lenis.destroy();
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener('wheel', resumeRAF);
+      window.removeEventListener('touchstart', resumeRAF);
     };
   }, []);
 

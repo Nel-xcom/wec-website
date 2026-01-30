@@ -108,6 +108,7 @@ const NeuralConnect = () => (
 const CrystalCard = ({ title, subtitle, desc, artifact: Artifact, type }) => (
     <motion.div
         className={`crystal-slab radioactive-border p-8 md:p-10 rounded-3xl flex flex-col justify-between group overflow-hidden relative min-w-[350px] md:min-w-[400px] h-[400px] mx-4 transition-all duration-500`}
+        style={{ willChange: 'transform' }}
         whileHover={{
             scale: 1.03,
             borderColor: type === 'capital' ? 'rgba(234, 179, 8, 0.4)' : 'rgba(255,255,255,0.2)',
@@ -232,7 +233,7 @@ export default function Ecosystem() {
             >
                 <motion.div
                     className="flex"
-                    style={{ x }}
+                    style={{ x, willChange: 'transform' }}
                     drag="x"
                     dragConstraints={{ left: RESET_THRESHOLD, right: 0 }} // Loose constraints
                     onDragStart={() => setIsDragging(true)}
