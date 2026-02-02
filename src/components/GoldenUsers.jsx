@@ -147,7 +147,7 @@ const Manifesto = () => {
                             e.target.style.boxShadow = '0 12px 32px rgba(213, 241, 255, 0.3)';
                         }}
                     >
-                        Acceder al Ecosistema
+                        Obtener acceso anticipado
                     </button>
 
                     <a href="#" style={{

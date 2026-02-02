@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import phoneImage from '../assets/images/second-sect.png';
+import phoneImage from '../assets/images/second-sect.webp';
 
 const Philosophy = () => {
     const containerRef = useRef(null);

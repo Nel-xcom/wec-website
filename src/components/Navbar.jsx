@@ -53,8 +53,8 @@ function Navbar() {
 
                 {/* Links Left */}
                 <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs text-slate-400 font-bold mb-1">
-                    <a href="#ecosystem"><DecodingText text="ECOSISTEMA" /></a>
-                    <a href="#security"><DecodingText text="SEGURIDAD" /></a>
+                    <Link to="/ecosystem"><DecodingText text="ECOSISTEMA" /></Link>
+                    <Link to="/security"><DecodingText text="SEGURIDAD" /></Link>
                     <Link to="/"><DecodingText text="NUESTRA MISIÓN" /></Link>
                 </div>
 

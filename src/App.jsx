@@ -2,13 +2,16 @@ import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Lenis from 'lenis';
 import Navbar from './components/Navbar';
-import ReactiveBackground from './components/ReactiveBackground';
+import GeometricBackground from './components/GeometricBackground';
+import Footer from './components/Footer';
 import Hero from './components/Hero';
 import Ecosystem from './components/Ecosystem';
 import Intelligence from './components/Intelligence';
 import Security from './components/Security';
 import Closure from './components/Closure';
 import ManifestoPage from './components/ManifestoPage';
+import EcosystemPage from './pages/EcosystemPage';
+import SecurityPage from './pages/SecurityPage';
 
 // Landing Page Component to group home sections
 const LandingPage = () => (
@@ -89,12 +92,8 @@ function App() {
 
   return (
     <div className="relative w-full min-h-screen text-slate-400 overflow-hidden font-sans selection:bg-wec-blue/30 selection:text-white">
-      {/* The Digital Void & Reactive Atmosphere - GLOBAL */}
-      <div className="volumetric-void">
-        <div className="magma-orb-1" />
-        <div className="magma-orb-2" />
-      </div>
-      <ReactiveBackground />
+      {/* GLOBAL BACKGROUND */}
+      <GeometricBackground />
 
       {/* Cinematic Grit - GLOBAL */}
       <div className="film-grain" />
@@ -103,7 +102,12 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/manifesto" element={<ManifestoPage />} />
+        <Route path="/ecosystem" element={<EcosystemPage />} />
+        <Route path="/security" element={<SecurityPage />} />
       </Routes>
+
+      {/* GLOBAL FOOTER */}
+      <Footer />
     </div>
   );
 }

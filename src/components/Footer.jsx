@@ -1,54 +1,75 @@
-import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
-const Footer = () => {
+const FooterLink = ({ href, children }) => (
+    <a
+        href={href}
+        className="text-sm text-slate-500 hover:text-white transition-colors duration-300 block mb-3"
+    >
+        {children}
+    </a>
+);
+
+export default function Footer() {
     return (
-        <section style={{
-            height: '60vh',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative',
-            background: 'linear-gradient(to top, rgba(213, 241, 255, 0.05) 0%, transparent 50%)' // Sunrise effect
-        }}>
+        <footer className="relative w-full border-t border-white/5 bg-[#030303] pt-20 pb-10 px-6 md:px-20 z-10">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
 
-            <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ margin: "-100px" }}
-                style={{
-                    fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-                    color: '#fff',
-                    marginBottom: '3rem',
-                    textAlign: 'center'
-                }}
-            >
-                La historia no se espera.<br />
-                <span className="aurora-text">Se escribe.</span>
-            </motion.h2>
+                {/* BRAND COLUMN */}
+                <div className="md:col-span-1">
+                    <Link to="/" className="text-2xl font-bold text-white tracking-tighter mb-4 block">
+                        WEC
+                    </Link>
+                    <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                        Democratizando el acceso a capital, talento y liquidez para la próxima generación de empresas globales.
+                    </p>
+                    <div className="flex gap-4">
+                        {/* Social Placeholders */}
+                        {['twitter', 'linkedin', 'instagram'].map((social) => (
+                            <a
+                                key={social}
+                                href="#"
+                                className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-white/10 hover:text-white transition-all duration-300"
+                                aria-label={social}
+                            >
+                                <span className="w-4 h-4 bg-current rounded-sm opacity-50" />
+                            </a>
+                        ))}
+                    </div>
+                </div>
 
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="pill-btn"
-                style={{
-                    background: '#fff',
-                    color: '#000',
-                    fontSize: '1.2rem',
-                    padding: '20px 60px',
-                    boxShadow: '0 0 30px rgba(255,255,255,0.2)'
-                }}
-            >
-                Comenzar
-            </motion.button>
+                {/* LINKS COLUMNS */}
+                <div>
+                    <h4 className="text-white font-bold mb-6">Producto</h4>
+                    <FooterLink href="/ecosystem">Ecosistema</FooterLink>
+                    <FooterLink href="#">Marketplace</FooterLink>
+                    <FooterLink href="#">Find Capital</FooterLink>
+                    <FooterLink href="#">Pricing</FooterLink>
+                </div>
 
-            <div style={{ marginTop: 'auto', marginBottom: '3rem', display: 'flex', gap: '2rem', fontSize: '0.9rem', color: '#555' }}>
-                <span>Legal</span>
-                <span>Roadmap</span>
-                <span>Privacidad</span>
+                <div>
+                    <h4 className="text-white font-bold mb-6">Compañía</h4>
+                    <FooterLink href="/manifesto">Manifiesto</FooterLink>
+                    <FooterLink href="#">Sobre Nosotros</FooterLink>
+                    <FooterLink href="#">Carreras</FooterLink>
+                    <FooterLink href="#">Blog</FooterLink>
+                </div>
+
+                <div>
+                    <h4 className="text-white font-bold mb-6">Legal</h4>
+                    <FooterLink href="#">Términos de Servicio</FooterLink>
+                    <FooterLink href="#">Política de Privacidad</FooterLink>
+                    <FooterLink href="#">Cookies</FooterLink>
+                </div>
             </div>
 
-        </section>
+            {/* BOTTOM BAR */}
+            <div className="max-w-7xl mx-auto pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600">
+                <p>&copy; {new Date().getFullYear()} World Entrepreneurs Centre. Todos los derechos reservados.</p>
+                <div className="flex gap-6 mt-4 md:mt-0">
+                    <a href="#" className="hover:text-slate-400 transition-colors">Privacidad</a>
+                    <a href="#" className="hover:text-slate-400 transition-colors">Términos</a>
+                </div>
+            </div>
+        </footer>
     );
-};
-
-export default Footer;
+}

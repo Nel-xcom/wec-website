@@ -60,7 +60,7 @@ export default function Closure() {
                 <div className="absolute inset-0 bg-white/50 rounded-full blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
 
                 <span className="relative z-10 text-black font-extrabold text-xl tracking-widest uppercase flex items-center gap-3">
-                    Únete a la Revolución
+                    OBTENER ACCESO ANTICIPADO
                     <div className="w-3 h-3 bg-black rounded-full animate-pulse" />
                 </span>
             </motion.button>

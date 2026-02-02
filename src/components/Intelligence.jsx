@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Code2, LineChart, TrendingUp, BrainCircuit } from 'lucide-react';
-import bt1 from '../assets/images/bt-1.png';
-import bt2 from '../assets/images/bt-2.png';
-import bt3 from '../assets/images/bt-3.png';
-import bt4 from '../assets/images/bt-4.png';
+import bt1 from '../assets/images/bt-1.webp';
+import bt2 from '../assets/images/bt-2.webp';
+import bt3 from '../assets/images/bt-3.webp';
+import bt4 from '../assets/images/bt-4.webp';
 
 const FEATURES = [
     {

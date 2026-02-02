@@ -187,7 +187,7 @@ export default function ManifestoPage() {
 
                     {/* REACTIVE CTA */}
                     <MagneticButton className="relative z-20 px-12 py-5 rounded-full bg-white text-black font-extrabold text-lg md:text-xl tracking-widest uppercase hover:bg-wec-blue transition-all duration-300 shadow-[0_0_50px_rgba(255,255,255,0.4)] hover:shadow-[0_0_80px_rgba(255,255,255,0.8)] hover:scale-105">
-                        ÚNETE A LA REVOLUCIÓN
+                        OBTENER ACCESO ANTICIPADO
                     </MagneticButton>
                 </div>
 
