@@ -60,7 +60,7 @@ function Navbar() {
                 <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs text-slate-400 font-bold mb-1">
                     <Link to="/ecosystem"><DecodingText text="ECOSISTEMA" /></Link>
                     <Link to="/security"><DecodingText text="SEGURIDAD" /></Link>
-                    <Link to="/"><DecodingText text="NUESTRA MISIÓN" /></Link>
+                    <Link to="/mission"><DecodingText text="NUESTRA MISIÓN" /></Link>
                 </div>
 
                 {/* Logo Center (Mobile Left / Desktop Center) */}
@@ -111,7 +111,7 @@ function Navbar() {
                     <Link to="/manifesto" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">MANIFIESTO</Link>
                     <div className="w-full h-px bg-white/10 my-2" />
                     <Link to="/" onClick={toggleMenu} className="text-slate-400 text-sm">DESCARGAR APP</Link>
-                    <Link to="/" onClick={toggleMenu} className="text-slate-400 text-sm">NUESTRA MISIÓN</Link>
+                    <Link to="/mission" onClick={toggleMenu} className="text-slate-400 text-sm">NUESTRA MISIÓN</Link>
                 </motion.div>
             )}
         </motion.nav>

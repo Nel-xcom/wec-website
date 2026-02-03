@@ -12,6 +12,7 @@ import Closure from './components/Closure';
 import ManifestoPage from './components/ManifestoPage';
 import EcosystemPage from './pages/EcosystemPage';
 import SecurityPage from './pages/SecurityPage';
+import MissionPage from './pages/MissionPage';
 
 // Landing Page Component to group home sections
 const LandingPage = () => (
@@ -103,7 +104,9 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/manifesto" element={<ManifestoPage />} />
         <Route path="/ecosystem" element={<EcosystemPage />} />
+        <Route path="/ecosystem" element={<EcosystemPage />} />
         <Route path="/security" element={<SecurityPage />} />
+        <Route path="/mission" element={<MissionPage />} />
       </Routes>
 
       {/* GLOBAL FOOTER */}
