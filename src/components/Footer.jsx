@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logoWhite from '../assets/logos/logo-white.png';
 
 const FooterLink = ({ href, children }) => (
     <a
@@ -16,11 +17,11 @@ export default function Footer() {
 
                 {/* BRAND COLUMN */}
                 <div className="md:col-span-1">
-                    <Link to="/" className="text-2xl font-bold text-white tracking-tighter mb-4 block">
-                        WEC
+                    <Link to="/" className="inline-block mb-6">
+                        <img src={logoWhite} alt="WEC" className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300" />
                     </Link>
                     <p className="text-slate-500 text-sm leading-relaxed mb-6">
-                        Democratizando el acceso a capital, talento y liquidez para la próxima generación de empresas globales.
+                        Ecosistema digital emprendedor, donde la tecnología y la innovación impulsan el crecimiento económico global.
                     </p>
                     <div className="flex gap-4">
                         {/* Social Placeholders */}

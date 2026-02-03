@@ -177,7 +177,7 @@ export default function ManifestoPage() {
                 </CrystallizeText>
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-right">
-                    Y el centro mundial de emprendedores es, en esencia, la obra de ese tipo de personas. Una constelación de mentes inquietas que eligieron no esperar, no pedir, no dudar. Eligieron hacer.
+                    Y el centro mundial de emprendedores es, en esencia, la obra de ese tipo de personas. Una constelación de mentes inquietas que eligieron no esperar, no pedir, no dudar. Eligieron hacer. Asi es como se concreto el final de una idea y comenzo un sueño.
                 </CrystallizeText>
 
                 <div className="pt-20 text-center">
