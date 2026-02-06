@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 import { ShieldCheck, Lock, Scale } from 'lucide-react';
 
-const CitadelProtocol = ({ title, subtitle, desc, icon: Icon, delay }) => (
+const CitadelProtocol = memo(({ title, subtitle, desc, icon: Icon, delay }) => (
     <motion.div
         className="flex flex-col items-center text-center p-6 relative z-10"
         initial={{ opacity: 0, y: 30 }}
@@ -9,21 +10,27 @@ const CitadelProtocol = ({ title, subtitle, desc, icon: Icon, delay }) => (
         viewport={{ once: true }}
         transition={{ type: "spring", stiffness: 100, damping: 20, delay }}
     >
-        {/* ROTATING ENERGY SPHERE */}
-        <div className="relative mb-8">
-            <motion.div
-                className="absolute inset-0 rounded-full border border-t-wec-blue/50 border-r-transparent border-b-wec-purple/50 border-l-transparent"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-                className="absolute inset-[-4px] rounded-full border border-t-transparent border-r-wec-purple/30 border-b-transparent border-l-wec-blue/30"
-                animate={{ rotate: -360 }}
-                transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+        {/* ROTATING ENERGY SPHERE - OPTIMIZED: CSS ANIMATION & LAYER ISOLATION */}
+        <div className="relative mb-8 w-24 h-24 flex items-center justify-center">
+
+            {/* Ring 1 - Outer (3s rotation) */}
+            <div
+                className="absolute inset-[-8px] rounded-full border border-t-wec-blue/50 border-r-transparent border-b-wec-purple/50 border-l-transparent animate-spin"
+                style={{ animationDuration: '3s', willChange: 'transform' }} // Exact match: duration 3
             />
 
-            <div className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.15)] relative z-10">
-                <Icon size={32} className="text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" strokeWidth={1.5} />
+            {/* Ring 2 - Inner (5s reverse rotation) */}
+            <div
+                className="absolute inset-[-12px] rounded-full border border-t-transparent border-r-wec-purple/30 border-b-transparent border-l-wec-blue/30 animate-[spin_reverse_linear_infinite]"
+                style={{ animationDuration: '5s', animationDirection: 'reverse', willChange: 'transform' }} // Exact match: duration 5
+            />
+
+            {/* Static Core with Blur - ISOLATED from rotation */}
+            <div
+                className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.15)] relative z-10"
+                style={{ willChange: 'transform' }} // GPU Promotion for Blur/Shadow container
+            >
+                <Icon size={32} className="text-white" strokeWidth={1.5} />
             </div>
         </div>
 
@@ -33,9 +40,9 @@ const CitadelProtocol = ({ title, subtitle, desc, icon: Icon, delay }) => (
             {desc}
         </p>
     </motion.div>
-);
+));
 
-export default function Security() {
+const Security = () => {
     return (
         <section id="security" className="w-full py-32 px-6 flex flex-col items-center relative overflow-hidden">
 
@@ -82,4 +89,6 @@ export default function Security() {
 
         </section>
     );
-}
+};
+
+export default memo(Security);

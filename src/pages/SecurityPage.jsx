@@ -83,9 +83,7 @@ const DetailSection = ({ data, index }) => {
                                 {data.title}
                             </h2>
                             {/* Subtle Shimmer Overlay - Gradient Tinted */}
-                            <h2 className="absolute top-0 left-0 text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-transparent via-purple-300/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 animate-pulse pointer-events-none">
-                                {data.title}
-                            </h2>
+
                         </div>
 
                         <p className="text-xl md:text-2xl text-slate-400 font-light leading-relaxed max-w-2xl border-l-2 border-white/5 pl-6 group-hover:border-purple-500/30 transition-colors duration-500">
@@ -99,7 +97,7 @@ const DetailSection = ({ data, index }) => {
                         whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                         transition={{ duration: 1.2, ease: "easeOut" }}
                         className="hidden lg:flex items-center justify-center w-[200px] h-[200px] opacity-20 grayscale brightness-150 group-hover:opacity-60 group-hover:scale-110 group-hover:grayscale-0 group-hover:sepia group-hover:hue-rotate-[90deg] transition-all duration-700 ease-in-out"
-                        style={{ filter: 'grayscale(100%) drop-shadow(0 0 20px rgba(168, 85, 247, 0.1))' }}
+                        style={{ opacity: 0.8 }} // Optimized: Removed heavy CSS filter
                     >
                         <data.Artifact />
                     </motion.div>
@@ -203,7 +201,7 @@ export default function SecurityPage() {
             </section>
 
             {/* PROTOCOLS LIST */}
-            <div className="relative z-10 w-full border-t border-white/5 bg-[#030303]/90 backdrop-blur-sm">
+            <div className="relative z-10 w-full border-t border-white/5 bg-[#030303]/90">
                 {PROTOCOLS.map((item, i) => (
                     <DetailSection key={i} data={item} index={i} />
                 ))}

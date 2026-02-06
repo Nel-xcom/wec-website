@@ -1,19 +1,18 @@
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import { useRef, useEffect, useState as React_useState } from 'react'; // Renamed useState to React_useState to avoid conflict if user has a local useState
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef, useEffect, useState as React_useState, memo, useCallback } from 'react'; // Renamed useState to React_useState
 import Navbar from '../components/Navbar';
 import GeometricBackground from '../components/GeometricBackground';
 
 // --- OPTIMIZED LIVING CORE ---
-// Using CSS animations instead of JS-driven framer motion for continuous rotation to offload main thread.
-// Reduced blur radius for performance.
-const LivingCore = ({ scrollYProgress }) => {
+// Memoized to prevent re-renders by parent.
+const LivingCore = memo(({ scrollYProgress }) => {
     const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.2, 1.5]);
     const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.6, 1, 1, 0]);
 
     return (
         <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-0">
             <motion.div
-                style={{ scale, opacity }}
+                style={{ scale, opacity, willChange: 'transform, opacity' }} // GPU Hint
                 className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px]"
             >
                 {/* Optimized Blur: Using opacity layers instead of heavy filters where possible */}
@@ -28,11 +27,11 @@ const LivingCore = ({ scrollYProgress }) => {
             </motion.div>
         </div>
     );
-};
+});
 
 // --- OPTIMIZED WORD REVEAL (CSS BASED) ---
-// Splitting into spans but using native CSS animation for max performance on low-end.
-const LuminousText = ({ children, className, delay = 0, trigger, speed = 0.08 }) => { // Faster text default (0.08s)
+// Memoized component.
+const LuminousText = memo(({ children, className, delay = 0, trigger, speed = 0.08 }) => {
     const words = typeof children === 'string' ? children.split(" ") : [children];
 
     return (
@@ -52,13 +51,13 @@ const LuminousText = ({ children, className, delay = 0, trigger, speed = 0.08 })
                 `}
             </style>
             {typeof children === 'string' ? (
-                children.split(" ").map((word, i) => (
+                words.map((word, i) => (
                     <span
                         key={i}
                         className="word-reveal inline-block mr-[0.25em]"
                         style={{
                             animationName: trigger ? 'revealLight' : 'none',
-                            animationDuration: '0.8s', // Fast & Snappy (was 1.5s)
+                            animationDuration: '0.8s',
                             animationTimingFunction: 'ease-out',
                             animationDelay: `${delay + (i * speed)}s`
                         }}
@@ -69,16 +68,16 @@ const LuminousText = ({ children, className, delay = 0, trigger, speed = 0.08 })
             ) : children}
         </span>
     );
-};
+});
 
 // --- SCROLLYTELLING TEXT BLOCK ---
-const ManifestoBlock = ({ children, align = "center", id }) => {
+const ManifestoBlock = memo(({ children, align = "center", id }) => {
     return (
         <div id={id} className={`flex flex-col ${align === "left" ? "items-start text-left" : align === "right" ? "items-end text-right" : "items-center text-center"} max-w-4xl mx-auto py-16 px-6 relative z-10 min-h-[30vh] justify-center`}>
             {children}
         </div>
     );
-};
+});
 
 export default function MissionPage() {
     const containerRef = useRef(null);
@@ -90,12 +89,23 @@ export default function MissionPage() {
     const [startSequence, setStartSequence] = React_useState(false);
     const [isMobile, setIsMobile] = React_useState(false);
 
-    // Detect Mobile
+    // Detect Mobile with Debounce
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        let timeoutId;
+        const checkMobile = () => {
+            // Debounce resize check
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                setIsMobile(window.innerWidth < 768);
+            }, 100);
+        };
+
         checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
+        window.addEventListener('resize', checkMobile, { passive: true }); // Passive listener
+        return () => {
+            window.removeEventListener('resize', checkMobile);
+            clearTimeout(timeoutId);
+        };
     }, []);
 
     // Auto-Scroll Sequence
@@ -151,7 +161,7 @@ export default function MissionPage() {
             <div className="fixed inset-0 z-0">
                 <GeometricBackground />
                 <motion.div
-                    style={{ opacity: backgroundOpacity }}
+                    style={{ opacity: backgroundOpacity, willChange: 'opacity' }} // GPU Hint
                     className="absolute inset-0 bg-gradient-to-b from-transparent via-purple-900/10 to-wec-blue/5 pointer-events-none"
                 />
             </div>

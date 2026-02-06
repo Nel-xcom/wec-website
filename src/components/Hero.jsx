@@ -1,28 +1,35 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { useRef, memo } from 'react';
 
 function Hero() {
     const ref = useRef(null);
 
-    // Scroll dissolve for text
+    // Scroll dissolve for text - OPTIMIZED
+    // Removed 'filter: blur()' transition to prevent layout thrashing.
+    // Replaced with opacity and scale only, which are compositor-friendly.
     const { scrollYProgress } = useScroll({
         target: ref,
-        offset: ["start start", "end start"]
+        offset: ["start start", "end start"] // Passive by default in Framer Motion
     });
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-    const filter = useTransform(scrollYProgress, [0, 0.5], ["blur(0px)", "blur(10px)"]);
-    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.9]);
+
+    // Smooth out the scroll value
+    const smoothScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 20, restDelta: 0.001 });
+
+    const opacity = useTransform(smoothScroll, [0, 0.4], [1, 0]);
+    const scale = useTransform(smoothScroll, [0, 0.4], [1, 0.95]);
+    // const filter = ... REMOVED: Blur is too expensive for scroll-linked animation on low-end.
 
     return (
         <motion.section
             ref={ref}
-            style={{ opacity, filter, scale, willChange: 'transform, filter, opacity' }}
+            style={{ opacity, scale, willChange: 'opacity, transform' }} // GPU Hint
             className="relative w-full min-h-screen flex flex-col justify-center items-center px-4"
         >
 
-            {/* TEXT CONTENT */}
+            {/* TEXT CONTENT - Rendered on its own layer */}
             <motion.div
-                className="text-center flex flex-col items-center z-10 max-w-5xl mt-32 md:mt-40" // Push content down
+                className="text-center flex flex-col items-center z-10 max-w-5xl mt-32 md:mt-40"
+                style={{ willChange: 'transform' }}
             >
                 <motion.h1
                     className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-[1.1] drop-shadow-2xl text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300"

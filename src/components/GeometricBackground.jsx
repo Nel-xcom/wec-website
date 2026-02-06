@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 
-const Shape = ({ className, delay = 0, duration = 60, reverse = false }) => (
+const Shape = memo(({ className, delay = 0, duration = 60, reverse = false }) => (
     <motion.div
         className={`absolute border border-white/5 rounded-full ${className}`}
+        style={{ willChange: "transform" }} // GPU Hint
         initial={{ rotate: 0, opacity: 0 }}
         animate={{
             rotate: reverse ? -360 : 360,
-            opacity: [0.03, 0.08, 0.03] // Breathing opacity
+            opacity: [0.03, 0.08, 0.03]
         }}
         transition={{
             rotate: {
@@ -22,9 +24,9 @@ const Shape = ({ className, delay = 0, duration = 60, reverse = false }) => (
             }
         }}
     />
-);
+));
 
-export default function GeometricBackground() {
+const GeometricBackground = () => {
     return (
         <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none z-0 bg-[#030303]">
             {/* Ambient Gradient Spot (Subtle) */}
@@ -46,11 +48,13 @@ export default function GeometricBackground() {
                 {/* Floating Geometric Primitives (Decorations) */}
                 <motion.div
                     className="absolute top-1/4 right-1/4 w-32 h-32 border border-white/5 opacity-5"
+                    style={{ willChange: "transform" }} // GPU Hint
                     animate={{ rotate: 360, y: [0, -20, 0] }}
                     transition={{ duration: 40, ease: "linear", y: { duration: 10, repeat: Infinity, ease: "easeInOut" } }}
                 />
                 <motion.div
                     className="absolute bottom-1/3 left-1/4 w-20 h-20 border border-white/5 rotate-45 opacity-5"
+                    style={{ willChange: "transform" }} // GPU Hint
                     animate={{ rotate: [45, 225, 45] }}
                     transition={{ duration: 50, ease: "easeInOut", repeat: Infinity }}
                 />
@@ -60,4 +64,6 @@ export default function GeometricBackground() {
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03]" />
         </div>
     );
-}
+};
+
+export default memo(GeometricBackground);

@@ -21,6 +21,8 @@ body {
     /* PERFORMANCE: Reduced backdrop-blur-2xl to lg for low-end devices */
     @apply bg-[#0A0A0A]/60 backdrop-blur-lg border border-white/5 shadow-2xl;
     box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.05);
+    will-change: transform;
+    /* GPU Layer Promotion for Glass Effect */
   }
 
   .radioactive-border {

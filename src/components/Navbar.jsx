@@ -73,7 +73,7 @@ function Navbar() {
                 {/* Right Links (Desktop) */}
                 <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs text-slate-400 font-bold mb-1">
                     <Link to="/manifesto"><DecodingText text="MANIFIESTO" /></Link>
-                    <Link to="/"><DecodingText text="DESCARGAR APP" /></Link>
+                    <Link to="/download"><DecodingText text="DESCARGAR APP" /></Link>
                     <Link to="/"><DecodingText text="TÉRMINOS" /></Link>
                 </div>
 
