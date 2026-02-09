@@ -1,6 +1,6 @@
 import { useRef, useEffect, memo } from 'react';
-import { Camera } from '@mediapipe/camera_utils';
-import { Hands } from '@mediapipe/hands';
+// import { Camera } from '@mediapipe/camera_utils'; // REMOVED: Use Global
+// import { Hands } from '@mediapipe/hands'; // REMOVED: Use Global
 import { useGesture } from '../context/GestureContext';
 
 const HandGestureController = () => {
@@ -9,12 +9,10 @@ const HandGestureController = () => {
         isActive, toggleGestureControl, setIsLoaded,
         setIsReady, setIsGrabbing,
         posX, posY,
-        triggerEditorMode // New Phase 3 Trigger
+        triggerEditorMode
     } = useGesture();
 
-    // REFS FOR STABLE CALLBACKS (Prevent useEffect re-runs)
-    // We use refs to access the latest state/props inside the stable onResults loop
-    // without adding them to the useEffect dependency array.
+    // REFS FOR STABLE CALLBACKS
     const stateRef = useRef({
         isActive,
         setIsReady,
@@ -42,10 +40,6 @@ const HandGestureController = () => {
         };
     });
 
-    // LANDMARK INDICES
-    // 0: WRIST, 8: INDEX_FINGER_TIP, 12: MIDDLE_FINGER_TIP
-    // 5: INDEX_FINGER_MCP, 9: MIDDLE_FINGER_MCP, 17: PINKY_FINGER_MCP
-
     useEffect(() => {
         if (!isActive) {
             // Cleanup state if manually toggled off
@@ -55,6 +49,16 @@ const HandGestureController = () => {
         }
 
         if (!videoRef.current) return;
+
+        // USA GLOBALS from CDN
+        const Hands = window.Hands;
+        const Camera = window.Camera;
+
+        if (!Hands || !Camera) {
+            console.error("Mediapipe globals not loaded. Check index.html scripts.");
+            alert("Error: Mediapipe libraries failed to load. Please refresh.");
+            return;
+        }
 
         const hands = new Hands({
             locateFile: (file) => {
