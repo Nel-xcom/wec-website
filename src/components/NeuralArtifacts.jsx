@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 
-export const NeuralExchange = () => (
-    <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
+const DEFAULT_CLASS = "absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none";
+
+export const NeuralExchange = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <circle
                 cx="100"
@@ -27,8 +29,8 @@ export const NeuralExchange = () => (
     </div>
 );
 
-export const BioChart = () => (
-    <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
+export const BioChart = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <line x1="40" y1="160" x2="160" y2="160" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.3" />
             <line x1="40" y1="40" x2="40" y2="160" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.3" />
@@ -51,8 +53,8 @@ export const BioChart = () => (
     </div>
 );
 
-export const NetworkUser = () => (
-    <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
+export const NetworkUser = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <motion.circle cx="100" cy="80" r="20" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 1.5 }} />
             <motion.path d="M60,160 Q100,100 140,160" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.3 }} />
@@ -66,8 +68,8 @@ export const NetworkUser = () => (
     </div>
 );
 
-export const NeuralMedia = () => (
-    <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
+export const NeuralMedia = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <motion.rect x="50" y="60" width="100" height="80" rx="10" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} />
             <motion.path d="M90,85 L120,100 L90,115 Z" stroke="#D5F1FF" strokeWidth="1" fill="none" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 0.5, type: "spring" }} />
@@ -93,8 +95,8 @@ export const NeuralMedia = () => (
     </div>
 );
 
-export const NeuralValuation = () => (
-    <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
+export const NeuralValuation = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <path d="M100,40 L100,160 M60,160 L140,160" stroke="#D5F1FF" strokeWidth="1" opacity="0.3" />
             <line
@@ -133,8 +135,8 @@ export const NeuralValuation = () => (
     </div>
 );
 
-export const NeuralConnect = () => (
-    <div className="absolute top-6 right-6 w-[160px] h-[160px] opacity-60 pointer-events-none">
+export const NeuralConnect = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
         <svg viewBox="0 0 200 200" className="w-full h-full">
             <circle
                 cx="100"
@@ -161,6 +163,67 @@ export const NeuralConnect = () => (
                 </g>
             ))}
             <circle cx="100" cy="100" r="10" fill="#D5F1FF" opacity="0.8" />
+        </svg>
+    </div>
+);
+
+// --- NEW SHAPES FOR PHASE 4 REFINEMENT ---
+
+export const NeuralTriangle = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
+        <svg viewBox="0 0 200 200" className="w-full h-full">
+            <defs>
+                <filter id="glow-tri" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                    <feMerge><feMergeNode in="coloredBlur" /><feMergeNode in="SourceGraphic" /></feMerge>
+                </filter>
+            </defs>
+            <motion.path
+                d="M100,40 L160,150 L40,150 Z"
+                stroke="#D5F1FF"
+                strokeWidth="1"
+                fill="none"
+                filter="url(#glow-tri)"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+            />
+            <motion.circle cx="100" cy="40" r="3" fill="#D5F1FF" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.5 }} />
+            <motion.circle cx="160" cy="150" r="3" fill="#D5F1FF" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.7 }} />
+            <motion.circle cx="40" cy="150" r="3" fill="#D5F1FF" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 1.9 }} />
+
+            {/* Inner rotating triangle */}
+            <g className="svg-spin-slow" style={{ transformOrigin: '100px 110px' }}>
+                <path d="M100,70 L130,130 L70,130 Z" stroke="#D5F1FF" strokeWidth="0.5" fill="none" opacity="0.5" strokeDasharray="2 2" />
+            </g>
+        </svg>
+    </div>
+);
+
+export const NeuralDiamond = ({ className = DEFAULT_CLASS }) => (
+    <div className={className}>
+        <svg viewBox="0 0 200 200" className="w-full h-full">
+            <motion.path
+                d="M100,30 L170,100 L100,170 L30,100 Z"
+                stroke="#D5F1FF"
+                strokeWidth="1"
+                fill="none"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: 2, ease: "easeInOut" }}
+            />
+            {/* Cross Hairs */}
+            <motion.line x1="100" y1="30" x2="100" y2="170" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.3" initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} transition={{ delay: 1 }} />
+            <motion.line x1="30" y1="100" x2="170" y2="100" stroke="#D5F1FF" strokeWidth="0.5" opacity="0.3" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ delay: 1.2 }} />
+
+            {/* Pulse Core */}
+            <circle cx="100" cy="100" r="5" fill="#D5F1FF" className="svg-particle" />
+
+            {/* Orbiting particles */}
+            <g className="svg-spin-medium" style={{ transformOrigin: '100px 100px' }}>
+                <circle cx="100" cy="50" r="2" fill="#D5F1FF" />
+                <circle cx="100" cy="150" r="2" fill="#D5F1FF" />
+            </g>
         </svg>
     </div>
 );

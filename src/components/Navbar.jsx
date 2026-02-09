@@ -2,10 +2,11 @@ import { useRef, useState, memo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import logoWhite from '../assets/logos/logo-white.png';
+import { useGesture } from '../context/GestureContext'; // Import Context
 
 // --- DECODING TEXT UTILITY ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-const DecodingText = memo(({ text }) => {
+const DecodingText = memo(({ text, style }) => {
     const [display, setDisplay] = useState(text);
     const intervalRef = useRef(null);
 
@@ -31,6 +32,7 @@ const DecodingText = memo(({ text }) => {
         <span
             onMouseEnter={scramble}
             className="cursor-pointer hover:text-white transition-colors duration-300 font-medium tracking-wide whitespace-nowrap"
+            style={style}
         >
             {display}
         </span>
@@ -42,8 +44,13 @@ DecodingText.displayName = 'DecodingText';
 function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
+    // Consume Context for Color Customization
+    const { navbarColor } = useGesture();
+
     // Toggle menu
     const toggleMenu = () => setIsOpen(!isOpen);
+
+    const linkStyle = { color: navbarColor };
 
     return (
         <motion.nav
@@ -57,10 +64,10 @@ function Navbar() {
             <div className="relative flex items-center justify-between md:items-end gap-10 md:gap-16 px-6 md:px-10 py-3 md:pb-[15px] md:pt-2 rounded-full bg-black/60 backdrop-blur-xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)] h-16 md:h-24 w-full max-w-[90%] md:w-auto md:max-w-none">
 
                 {/* Left Links (Desktop) */}
-                <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs text-slate-400 font-bold mb-1">
-                    <Link to="/ecosystem"><DecodingText text="ECOSISTEMA" /></Link>
-                    <Link to="/security"><DecodingText text="SEGURIDAD" /></Link>
-                    <Link to="/mission"><DecodingText text="NUESTRA MISIÓN" /></Link>
+                <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs font-bold mb-1" style={{ color: navbarColor }}>
+                    <Link to="/ecosystem"><DecodingText text="ECOSISTEMA" style={linkStyle} /></Link>
+                    <Link to="/security"><DecodingText text="SEGURIDAD" style={linkStyle} /></Link>
+                    <Link to="/mission"><DecodingText text="NUESTRA MISIÓN" style={linkStyle} /></Link>
                 </div>
 
                 {/* Logo Center (Mobile Left / Desktop Center) */}
@@ -71,13 +78,13 @@ function Navbar() {
                 </div>
 
                 {/* Right Links (Desktop) */}
-                <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs text-slate-400 font-bold mb-1">
-                    <Link to="/manifesto"><DecodingText text="MANIFIESTO" /></Link>
-                    <Link to="/download"><DecodingText text="DESCARGAR APP" /></Link>
-                    <Link to="/"><DecodingText text="TÉRMINOS" /></Link>
+                <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs font-bold mb-1" style={{ color: navbarColor }}>
+                    <Link to="/manifesto"><DecodingText text="MANIFIESTO" style={linkStyle} /></Link>
+                    <Link to="/download"><DecodingText text="DESCARGAR APP" style={linkStyle} /></Link>
+                    <Link to="/"><DecodingText text="TÉRMINOS" style={linkStyle} /></Link>
                 </div>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu Button - Inherit color? Or keep white? Keep white for visibility on dark overlay */}
                 <button
                     onClick={toggleMenu}
                     className="md:hidden flex flex-col justify-center items-center w-10 h-10 space-y-1.5 focus:outline-none z-50"

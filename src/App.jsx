@@ -6,6 +6,9 @@ import Lenis from 'lenis';
 import Navbar from './components/Navbar';
 import GeometricBackground from './components/GeometricBackground';
 import Hero from './components/Hero';
+import GestureUI from './components/GestureUI';
+
+import { GestureProvider } from './context/GestureContext';
 
 // LAZY IMPORTS (Below the Fold / Performance Optimization)
 const Ecosystem = lazy(() => import('./components/Ecosystem'));
@@ -28,6 +31,7 @@ const SectionLoader = () => <div className="min-h-[50vh] w-full flex items-cente
 const LandingPage = memo(() => (
   <>
     <Navbar />
+    <GestureUI /> {/* Global UI Layer - Outside Main Transform Context */}
     <main className="relative z-10 w-full flex flex-col items-center">
       <Hero />
       <Suspense fallback={<SectionLoader />}>
@@ -107,31 +111,31 @@ function App() {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen text-slate-400 overflow-hidden font-sans selection:bg-wec-blue/30 selection:text-white">
-      {/* GLOBAL BACKGROUND - MEMOIZED & ISOLATED */}
-      <GeometricBackground />
+    <GestureProvider>
 
-      {/* Cinematic Grit - GLOBAL (Static Texture, low cost) */}
-      <div className="film-grain" />
+      {/* GLOBAL BACKGROUND - Only mounted once */}
+      <div className="relative min-h-screen bg-[#030303] text-white selection:bg-wec-blue/30 selection:text-white">
+        <GeometricBackground />
 
-      {/* ROUTES */}
-      <Suspense fallback={<div className="min-h-screen w-full bg-black" />}>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/manifesto" element={<ManifestoPage />} />
-          <Route path="/ecosystem" element={<EcosystemPage />} />
-          <Route path="/ecosystem" element={<EcosystemPage />} />
-          <Route path="/security" element={<SecurityPage />} />
-          <Route path="/download" element={<DownloadPage />} />
-          <Route path="/mission" element={<MissionPage />} />
-        </Routes>
-      </Suspense>
+        <Suspense fallback={<SectionLoader />}>
+          <div className="relative z-10 w-full flex flex-col">
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/manifesto" element={<ManifestoPage />} />
+              <Route path="/ecosystem" element={<EcosystemPage />} />
+              <Route path="/security" element={<SecurityPage />} />
+              <Route path="/download" element={<DownloadPage />} />
+              <Route path="/mission" element={<MissionPage />} />
+            </Routes>
+          </div>
+        </Suspense>
 
-      {/* GLOBAL FOOTER */}
-      <Suspense fallback={null}>
-        <Footer />
-      </Suspense>
-    </div>
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
+      </div>
+
+    </GestureProvider>
   );
 }
 
