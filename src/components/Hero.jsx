@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePres
 import { useGesture } from '../context/GestureContext';
 import { NeuralExchange, BioChart, NetworkUser, NeuralMedia, NeuralValuation, NeuralConnect, NeuralTriangle, NeuralDiamond } from './NeuralArtifacts';
 import WorldMapBackground from './WorldMapBackground';
+import { useLanguage } from '../context/LanguageContext';
 
 const Hero = () => {
     const {
@@ -19,6 +20,8 @@ const Hero = () => {
         selectedObjectId,
         setSelectedObjectId
     } = useGesture();
+
+    const { t } = useLanguage();
 
     // --- TEXT STYLE LOGIC ---
     // Security Style: Text White + Bloom Shadow
@@ -232,16 +235,16 @@ const Hero = () => {
                         >
                             {isSecurityStyle ? (
                                 <>
-                                    <span className="text-white text-bloom">Red mundial de </span>
+                                    <span className="text-white text-bloom">{t('hero_title_prefix')} </span>
                                     <span
                                         className="text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300 inline-block pb-1"
                                         style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
                                     >
-                                        emprendedores
+                                        {t('hero_title_highlight')}
                                     </span>
                                 </>
                             ) : (
-                                "Red mundial de emprendedores"
+                                `${t('hero_title_prefix')} ${t('hero_title_highlight')}`
                             )}
                         </motion.h1>
                     </div>
@@ -254,7 +257,7 @@ const Hero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 0.8 }}
                         >
-                            Ecosistema digital emprendedor, donde la tecnología y la innovación impulsan el crecimiento económico global.
+                            {t('hero_subtitle')}
                         </motion.p>
                     </div>
                 </motion.div>
