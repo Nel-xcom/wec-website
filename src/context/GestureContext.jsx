@@ -39,7 +39,7 @@ export const GestureProvider = ({ children }) => {
         setIsActive(false); // Turn off camera
         setMode('editing');
         setIsToolbarVisible(true);
-        setEditorTime(60); // Reset to 60s
+        setEditorTime(45); // Reset to 45s
         // setBackgroundTheme('dark_gray'); // REMOVED: Keep user preference
     }, []);
 
