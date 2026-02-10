@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Sparkles, Loader2 } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
-const API_URL = import.meta.env.DEV ? 'http://localhost:3001/api/chat' : '/api/chat';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/chat';
 
 // Generate a unique session ID
 const getSessionId = () => {
