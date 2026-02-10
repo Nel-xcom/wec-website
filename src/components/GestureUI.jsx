@@ -26,7 +26,7 @@ const GestureUI = () => {
                             console.log("Toggle Clicked (Global UI)");
                             toggleGestureControl();
                         }}
-                        className="fixed bottom-8 right-8 z-[9999] group cursor-pointer active:scale-95 transition-transform duration-200"
+                        className="hidden md:block fixed bottom-8 right-8 z-[9999] group cursor-pointer active:scale-95 transition-transform duration-200"
                     >
                         {/* ROTATING BORDER CONTAINER */}
                         {/* Gradient Textures: Amber (Gold), Blue, Purple, White */}

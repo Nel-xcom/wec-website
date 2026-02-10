@@ -8,7 +8,7 @@ const LanguageSelector = () => {
     return (
         <button
             onClick={toggleLanguage}
-            className="fixed top-8 right-8 z-[9999] group cursor-pointer active:scale-95 transition-transform duration-200"
+            className="fixed bottom-8 right-8 md:bottom-auto md:top-8 md:right-8 z-[9999] group cursor-pointer active:scale-95 transition-transform duration-200"
             aria-label="Toggle Language"
         >
             {/* ROTATING BORDER (Subtle version of Hand Button) */}

@@ -131,8 +131,9 @@ export default function AIAgent() {
                         </div>
 
                         {/* BUTTON CONTENT */}
-                        <div className="relative flex items-center justify-center w-32 h-24 rounded-full bg-black/90 backdrop-blur-xl border border-white/10 transition-all duration-300 group-hover:bg-wec-blue/10">
-                            <Sparkles size={28} className="text-white group-hover:text-amber-300 transition-colors" />
+                        <div className="relative flex items-center justify-center w-20 h-14 md:w-32 md:h-24 rounded-full bg-black/90 backdrop-blur-xl border border-white/10 transition-all duration-300 group-hover:bg-wec-blue/10">
+                            <Sparkles size={20} className="md:hidden text-white group-hover:text-amber-300 transition-colors" />
+                            <Sparkles size={28} className="hidden md:block text-white group-hover:text-amber-300 transition-colors" />
                         </div>
                     </motion.button>
                 )}
