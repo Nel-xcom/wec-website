@@ -195,22 +195,22 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                            className="relative w-full max-w-lg pointer-events-auto" // Increased max-width
+                            className="relative w-[95%] md:w-full max-w-lg pointer-events-auto" // Responsive width
                         >
                             {/* MAIN CARD CONTENT */}
-                            <div className="relative bg-[#0a0a0a] rounded-[2.5rem] p-1 overflow-hidden shadow-2xl border border-white/10">
+                            <div className="relative bg-[#030303] rounded-[2.5rem] p-1 overflow-hidden shadow-[0_0_30px_rgba(255,255,255,0.1)] border border-white/20">
                                 {/* Inner Glass Texture */}
                                 <div className="absolute inset-0 bg-white/5 backdrop-blur-xl rounded-[2.5rem]" />
 
                                 {/* DRAGON LINES ANIMATION BACKGROUND */}
                                 <DragonLines />
 
-                                <div className="relative z-10 p-10 md:p-12 flex flex-col items-center text-center">
+                                <div className="relative z-10 p-6 md:p-12 flex flex-col items-center text-center">
 
                                     {/* CLOSE BUTTON */}
                                     <button
                                         onClick={handleClose}
-                                        className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors group z-20"
+                                        className="absolute top-4 right-4 md:top-6 md:right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors group z-20"
                                     >
                                         <X size={16} className="text-slate-400 group-hover:text-white transition-colors" />
                                     </button>
