@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Loader2, Sparkles, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const API_URL = import.meta.env.VITE_API_URL
@@ -17,33 +17,33 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
         const texts = {
             es: {
                 title: 'Acceso Anticipado',
-                subtitle: 'Sé de los primeros en experimentar WEC',
+                subtitle: 'Únete a la siguiente evolución.',
                 firstName: 'Nombre',
                 lastName: 'Apellido',
                 email: 'Correo electrónico',
-                submit: 'Solicitar acceso',
-                sending: 'Enviando...',
-                success: '¡Registro exitoso!',
-                successMsg: 'Te notificaremos cuando tu acceso esté listo.',
-                error: 'Error al enviar',
+                submit: 'Solicitar Acceso',
+                sending: 'Procesando...',
+                success: 'Acceso Concedido',
+                successMsg: 'Estás en la lista prioritaria.',
+                error: 'Error de conexión',
                 close: 'Cerrar',
-                emailError: 'Ingresa un correo válido',
-                required: 'Todos los campos son obligatorios',
+                emailError: 'Correo inválido',
+                required: 'Campos requeridos',
             },
             en: {
                 title: 'Early Access',
-                subtitle: 'Be among the first to experience WEC',
+                subtitle: 'Join the next evolution.',
                 firstName: 'First Name',
                 lastName: 'Last Name',
-                email: 'Email address',
-                submit: 'Request access',
-                sending: 'Sending...',
-                success: 'Successfully registered!',
-                successMsg: "We'll notify you when your access is ready.",
-                error: 'Error submitting',
+                email: 'Email Address',
+                submit: 'Request Access',
+                sending: 'Processing...',
+                success: 'Access Granted',
+                successMsg: 'You are on the priority list.',
+                error: 'Connection Error',
                 close: 'Close',
-                emailError: 'Enter a valid email',
-                required: 'All fields are required',
+                emailError: 'Invalid email',
+                required: 'Required fields',
             }
         };
         return texts[language]?.[key] || texts.es[key];
@@ -102,123 +102,121 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={handleClose}
-                        className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[10000]"
+                        className="fixed inset-0 bg-black/80 backdrop-blur-md z-[10000]"
                     />
 
-                    {/* MODAL */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                        className="fixed inset-0 flex items-center justify-center z-[10001] px-4"
-                    >
-                        <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-white/10 shadow-[0_0_80px_rgba(59,130,246,0.15)]">
-                            {/* BACKGROUND */}
-                            <div className="absolute inset-0 bg-[#0a0a0a]/95 backdrop-blur-2xl" />
+                    {/* MODAL CONTAINER */}
+                    <div className="fixed inset-0 flex items-center justify-center z-[10001] px-4 pointer-events-none">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                            className="relative w-full max-w-md pointer-events-auto"
+                        >
+                            {/* ROTATING BORDER GLOW (The "AI Style" signature) */}
+                            <div className="absolute -inset-[2px] rounded-[2.5rem] bg-[conic-gradient(from_0deg,#fcd34d,#3b82f6,#9333ea,#ffffff,#fcd34d)] animate-[spin_4s_linear_infinite] opacity-60 blur-sm" />
 
-                            {/* GRADIENT TOP BORDER */}
-                            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-wec-blue to-transparent opacity-60" />
+                            {/* MAIN CARD CONTENT */}
+                            <div className="relative bg-[#0a0a0a] rounded-[2.5rem] p-1 overflow-hidden shadow-2xl">
+                                {/* Inner Glass Texture */}
+                                <div className="absolute inset-0 bg-white/5 backdrop-blur-xl rounded-[2.5rem]" />
 
-                            {/* CONTENT */}
-                            <div className="relative p-8">
-                                {/* CLOSE BUTTON */}
-                                <button
-                                    onClick={handleClose}
-                                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
-                                >
-                                    <X size={14} className="text-slate-400" />
-                                </button>
+                                <div className="relative bg-black/80 rounded-[2.3rem] p-8 md:p-10 flex flex-col items-center text-center">
 
-                                {/* HEADER */}
-                                <div className="text-center mb-6">
-                                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-gradient-to-br from-wec-blue via-purple-500 to-amber-400 flex items-center justify-center">
-                                        <span className="text-2xl">🚀</span>
-                                    </div>
-                                    <h2 className="text-white text-xl font-bold tracking-wide">{t('title')}</h2>
-                                    <p className="text-slate-400 text-sm mt-1">{t('subtitle')}</p>
-                                </div>
-
-                                {/* SUCCESS STATE */}
-                                {status === 'success' ? (
-                                    <motion.div
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-center py-6"
+                                    {/* CLOSE BUTTON */}
+                                    <button
+                                        onClick={handleClose}
+                                        className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors group"
                                     >
-                                        <CheckCircle size={48} className="text-green-400 mx-auto mb-3" />
-                                        <h3 className="text-white text-lg font-semibold">{t('success')}</h3>
-                                        <p className="text-slate-400 text-sm mt-1">{t('successMsg')}</p>
-                                        <button
-                                            onClick={handleClose}
-                                            className="mt-6 px-6 py-2 rounded-full bg-white/5 border border-white/10 text-slate-300 text-sm hover:bg-white/10 transition-colors"
-                                        >
-                                            {t('close')}
-                                        </button>
-                                    </motion.div>
-                                ) : (
-                                    /* FORM */
-                                    <form onSubmit={handleSubmit} className="space-y-4">
-                                        <div>
-                                            <input
-                                                type="text"
-                                                value={form.firstName}
-                                                onChange={(e) => { setForm(f => ({ ...f, firstName: e.target.value })); setStatus('idle'); }}
-                                                placeholder={t('firstName')}
-                                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/40 transition-colors"
-                                            />
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="text"
-                                                value={form.lastName}
-                                                onChange={(e) => { setForm(f => ({ ...f, lastName: e.target.value })); setStatus('idle'); }}
-                                                placeholder={t('lastName')}
-                                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/40 transition-colors"
-                                            />
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="email"
-                                                value={form.email}
-                                                onChange={(e) => { setForm(f => ({ ...f, email: e.target.value })); setStatus('idle'); }}
-                                                placeholder={t('email')}
-                                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/40 transition-colors"
-                                            />
-                                        </div>
+                                        <X size={16} className="text-slate-400 group-hover:text-white transition-colors" />
+                                    </button>
 
-                                        {/* ERROR */}
-                                        {status === 'error' && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: -5 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                className="flex items-center gap-2 text-red-400 text-xs"
-                                            >
-                                                <AlertCircle size={14} />
-                                                <span>{errorMsg}</span>
-                                            </motion.div>
-                                        )}
+                                    {/* HEADER ICON */}
+                                    <div className="mb-6 relative">
+                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-wec-blue via-purple-500 to-amber-400 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                                            <Sparkles size={28} className="text-white" />
+                                        </div>
+                                        {/* Orbiting Ring */}
+                                        <div className="absolute inset-[-10px] border border-white/10 rounded-full animate-[spin_10s_linear_infinite]" />
+                                    </div>
 
-                                        {/* SUBMIT */}
-                                        <button
-                                            type="submit"
-                                            disabled={status === 'loading'}
-                                            className="w-full py-3 rounded-xl bg-gradient-to-r from-wec-blue via-purple-600 to-amber-500 text-white text-sm font-semibold tracking-wide hover:opacity-90 active:scale-[0.98] transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2"
+                                    {/* TITLE */}
+                                    <h2 className="text-2xl font-bold text-white mb-2 tracking-wide">{t('title')}</h2>
+                                    <p className="text-slate-400 text-sm mb-8 font-light tracking-wide">{t('subtitle')}</p>
+
+                                    {/* SUCCESS STATE */}
+                                    {status === 'success' ? (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            className="py-10 flex flex-col items-center"
                                         >
-                                            {status === 'loading' ? (
-                                                <>
-                                                    <Loader2 size={16} className="animate-spin" />
-                                                    {t('sending')}
-                                                </>
-                                            ) : (
-                                                t('submit')
+                                            <div className="w-20 h-20 rounded-full bg-green-500/10 flex items-center justify-center mb-4 border border-green-500/20">
+                                                <Check size={40} className="text-green-400" />
+                                            </div>
+                                            <h3 className="text-xl font-bold text-white mb-2">{t('success')}</h3>
+                                            <p className="text-slate-400 text-sm">{t('successMsg')}</p>
+                                        </motion.div>
+                                    ) : (
+                                        /* FORM */
+                                        <form onSubmit={handleSubmit} className="w-full space-y-4">
+                                            <div className="space-y-4">
+                                                <div className="relative group">
+                                                    <input
+                                                        type="text"
+                                                        value={form.firstName}
+                                                        onChange={(e) => { setForm(f => ({ ...f, firstName: e.target.value })); setStatus('idle'); }}
+                                                        placeholder={t('firstName')}
+                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/50 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
+                                                    />
+                                                </div>
+                                                <div className="relative group">
+                                                    <input
+                                                        type="text"
+                                                        value={form.lastName}
+                                                        onChange={(e) => { setForm(f => ({ ...f, lastName: e.target.value })); setStatus('idle'); }}
+                                                        placeholder={t('lastName')}
+                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/50 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
+                                                    />
+                                                </div>
+                                                <div className="relative group">
+                                                    <input
+                                                        type="email"
+                                                        value={form.email}
+                                                        onChange={(e) => { setForm(f => ({ ...f, email: e.target.value })); setStatus('idle'); }}
+                                                        placeholder={t('email')}
+                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/50 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            {/* ERROR MESSAGE */}
+                                            {status === 'error' && (
+                                                <motion.p
+                                                    initial={{ opacity: 0, y: -5 }}
+                                                    animate={{ opacity: 1, y: 0 }}
+                                                    className="text-red-400 text-xs text-center font-medium bg-red-500/10 py-1 px-3 rounded-full inline-block mx-auto"
+                                                >
+                                                    {errorMsg}
+                                                </motion.p>
                                             )}
-                                        </button>
-                                    </form>
-                                )}
+
+                                            {/* SUBMIT BUTTON */}
+                                            <button
+                                                type="submit"
+                                                disabled={status === 'loading'}
+                                                className="w-full py-4 rounded-full bg-gradient-to-r from-wec-blue via-purple-600 to-amber-500 text-white font-bold tracking-widest uppercase text-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_40px_rgba(147,51,234,0.6)] disabled:opacity-50 disabled:cursor-not-allowed mt-4 flex items-center justify-center gap-2"
+                                            >
+                                                {status === 'loading' && <Loader2 size={16} className="animate-spin" />}
+                                                {status === 'loading' ? t('sending') : t('submit')}
+                                            </button>
+                                        </form>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </motion.div>
+                        </motion.div>
+                    </div>
                 </>
             )}
         </AnimatePresence>
