@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'framer-motion';
 import { useGesture } from '../context/GestureContext';
 import { NeuralExchange, BioChart, NetworkUser, NeuralMedia, NeuralValuation, NeuralConnect, NeuralTriangle, NeuralDiamond } from './NeuralArtifacts';
+import WorldMapBackground from './WorldMapBackground';
 
 const Hero = () => {
     const {
@@ -95,12 +96,17 @@ const Hero = () => {
             case 'media': return <NeuralMedia {...props} />; // Rect-ish
             case 'valuation': return <NeuralValuation {...props} />;
             case 'connect': return <NeuralConnect {...props} />; // Graph
+            case 'triangle': return <NeuralTriangle {...props} />;
+            case 'diamond': return <NeuralDiamond {...props} />;
             default: return <NeuralConnect {...props} />;
         }
     };
 
     return (
         <section ref={containerRef} className={`relative h-screen w-full overflow-hidden flex flex-col items-center justify-center transition-colors duration-1000 ${getBackgroundStyle()}`}>
+
+            {/* WORLD MAP BACKGROUND (Subtle) */}
+            <WorldMapBackground theme={backgroundTheme} />
 
             {/* ADDED OBJECTS (Lights & Shapes) */}
             {addedObjects.map((obj) => (
