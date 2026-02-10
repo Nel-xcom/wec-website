@@ -1,7 +1,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, useEffect, useState as React_useState, memo, useCallback } from 'react'; // Renamed useState to React_useState
+import { useRef, useEffect, useState as React_useState, memo, useCallback } from 'react';
 import Navbar from '../components/Navbar';
 import GeometricBackground from '../components/GeometricBackground';
+import { useLanguage } from '../context/LanguageContext';
 
 // --- OPTIMIZED LIVING CORE ---
 // Memoized to prevent re-renders by parent.
@@ -81,6 +82,7 @@ const ManifestoBlock = memo(({ children, align = "center", id }) => {
 
 export default function MissionPage() {
     const containerRef = useRef(null);
+    const { t } = useLanguage();
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
@@ -175,20 +177,19 @@ export default function MissionPage() {
                 <ManifestoBlock align="center" id="section-1">
                     <div className="text-sm md:text-base font-mono mb-6 uppercase tracking-[0.2em] text-slate-500">
                         <LuminousText trigger={startSequence} delay={0} speed={0.03}>
-                            Nuestra Razón de Ser
+                            {t('mission_label')}
                         </LuminousText>
                     </div>
 
                     <div className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
                         <LuminousText trigger={startSequence} delay={0.5} speed={0.1}>
-                            Nacimos para desafiar la INERCIA.
+                            {t('mission_title')}
                         </LuminousText>
                     </div>
 
                     <div className="mt-8 text-xl md:text-2xl font-light leading-relaxed max-w-2xl">
                         <LuminousText trigger={startSequence} delay={1.5} speed={0.05}>
-                            Esa fuerza invisible que mantiene al potencial humano atado al suelo.
-                            Existimos para eliminar la fricción entre una idea brillante y su ejecución.
+                            {t('mission_desc')}
                         </LuminousText>
                     </div>
                 </ManifestoBlock>
@@ -202,7 +203,7 @@ export default function MissionPage() {
                     <div className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight max-w-3xl">
                         {/* MOBILE: Appears at 3s (very early) / DESKTOP: 6s */}
                         <LuminousText trigger={startSequence} delay={isMobile ? 3 : 6} speed={0.08}>
-                            Transformamos la soledad del emprendedor en una SIMBIOSIS GLOBAL.
+                            {t('mission_symbiosis')}
                         </LuminousText>
                     </div>
                 </ManifestoBlock>
@@ -212,7 +213,7 @@ export default function MissionPage() {
                     <div className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight max-w-3xl">
                         {/* MOBILE: 6s / DESKTOP: 12s */}
                         <LuminousText trigger={startSequence} delay={isMobile ? 6 : 12} speed={0.08}>
-                            Un ecosistema vivo que actúa como el MOTOR CREATIVO de nuestra especie.
+                            {t('mission_engine')}
                         </LuminousText>
                     </div>
                     <motion.div
@@ -229,7 +230,7 @@ export default function MissionPage() {
                         <div className="text-2xl md:text-4xl font-medium leading-relaxed tracking-tight mb-10 relative z-10">
                             {/* MOBILE: 10s / DESKTOP: 17s */}
                             <LuminousText trigger={startSequence} delay={isMobile ? 10 : 17} speed={0.05}>
-                                "Un nexo donde la tecnología y la ambición convergen para acelerar la evolución misma de la humanidad."
+                                {t('mission_convergence')}
                             </LuminousText>
                         </div>
 
@@ -241,7 +242,7 @@ export default function MissionPage() {
                             whileTap={{ scale: 0.95 }}
                             className="px-10 py-4 rounded-full bg-white text-black font-bold text-lg tracking-widest uppercase hover:bg-gradient-to-r hover:from-wec-blue hover:via-purple-400 hover:to-amber-300 hover:text-white transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
                         >
-                            Obtener acceso anticipado
+                            {t('mission_btn')}
                         </motion.button>
                     </div>
                 </ManifestoBlock>

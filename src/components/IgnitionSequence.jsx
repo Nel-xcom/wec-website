@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
+import { useLanguage } from '../context/LanguageContext';
 
 const IgnitionSequence = () => {
+    const { t } = useLanguage();
     return (
         <section style={{
             height: '80vh',
@@ -23,11 +25,11 @@ const IgnitionSequence = () => {
                     color: '#fff'
                 }}
             >
-                La secuencia de ignición<br /> ha comenzado.
+                {t('ignition_title_1')}<br /> {t('ignition_title_2')}
             </motion.h2>
 
             <p style={{ fontSize: '1.5rem', color: '#D5F1FF', maxWidth: '800px', marginBottom: '4rem', opacity: 0.8 }}>
-                La era de la exclusividad ha terminado. Una nueva galaxia de oportunidades te espera. ¿Vas a quedarte en tierra observando o vas a pilotar tu propio destino?
+                {t('ignition_desc')}
             </p>
 
             {/* Propulsion Button */}
@@ -49,7 +51,7 @@ const IgnitionSequence = () => {
                     overflow: 'hidden'
                 }}
             >
-                INICIAR DESPEGUE
+                {t('ignition_btn')}
                 <motion.div
                     style={{
                         position: 'absolute',

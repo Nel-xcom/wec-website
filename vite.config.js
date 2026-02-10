@@ -6,5 +6,13 @@ export default defineConfig(({ command }) => {
   return {
     plugins: [react()],
     base: command === 'build' ? '/wec-website/' : '/',
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3001',
+          changeOrigin: true,
+        }
+      }
+    }
   }
 })

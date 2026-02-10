@@ -5,68 +5,70 @@ import bt1 from '../assets/images/bt-1.webp';
 import bt2 from '../assets/images/bt-2.webp';
 import bt3 from '../assets/images/bt-3.webp';
 import bt4 from '../assets/images/bt-4.webp';
-
-const FEATURES = [
-    {
-        icon: Code2,
-        title: "Legal Drafting",
-        subtitle: "Zero-Friction Contracts",
-        color: "text-wec-blue",
-        bg: "bg-wec-blue/10",
-        border: "border-wec-blue/50",
-        image: bt1,
-        description: (
-            <>
-                Cada operación esta respaldada por <span className="text-white font-medium">smart contracts</span> priorizando la <span className="text-white font-medium">seguridad y transparencia</span> a los usuarios.
-            </>
-        )
-    },
-    {
-        icon: LineChart,
-        title: "Predictive Analysis",
-        subtitle: "Real-Time Market Data",
-        color: "text-wec-purple",
-        bg: "bg-wec-purple/10",
-        border: "border-wec-purple/50",
-        image: bt2,
-        description: (
-            <>
-                Analisis en tiempo real de oportunidades para <span className="text-white font-medium">emprendedores e inversores</span>, con el fin de <span className="text-white font-medium">democratizar su acceso</span>.
-            </>
-        )
-    },
-    {
-        icon: TrendingUp,
-        title: "Market Algorithms",
-        subtitle: "Trend Recognition",
-        color: "text-emerald-400",
-        bg: "bg-emerald-500/10",
-        border: "border-emerald-500/50",
-        image: bt3,
-        description: (
-            <>
-                Nuestro algoritmo <span className="text-white font-medium">aprende sobre tus preferencias</span> para mostrarte <span className="text-white font-medium">oportunidades a tu medida</span>.
-            </>
-        )
-    },
-    {
-        icon: BrainCircuit,
-        title: "Decision AI",
-        subtitle: "Strategic Modeling",
-        color: "text-amber-400",
-        bg: "bg-amber-500/10",
-        border: "border-amber-500/50",
-        image: bt4,
-        description: (
-            <>
-                Usamos <span className="text-white font-medium">inteligencia artificial</span> para facilitar la <span className="text-white font-medium">toma de decisiones</span> de los usuarios. Mas tiempo y mas beneficio...
-            </>
-        )
-    }
-];
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Intelligence() {
     const [selectedIndex, setSelectedIndex] = useState(0);
+    const { t } = useLanguage();
+
+    const FEATURES = [
+        {
+            icon: Code2,
+            title: t('intel_feat_1_title'),
+            subtitle: t('intel_feat_1_sub'),
+            color: "text-wec-blue",
+            bg: "bg-wec-blue/10",
+            border: "border-wec-blue/50",
+            image: bt1,
+            description: (
+                <>
+                    {t('intel_feat_1_desc')}
+                </>
+            )
+        },
+        {
+            icon: LineChart,
+            title: t('intel_feat_2_title'),
+            subtitle: t('intel_feat_2_sub'),
+            color: "text-wec-purple",
+            bg: "bg-wec-purple/10",
+            border: "border-wec-purple/50",
+            image: bt2,
+            description: (
+                <>
+                    {t('intel_feat_2_desc')}
+                </>
+            )
+        },
+        {
+            icon: TrendingUp,
+            title: t('intel_feat_3_title'),
+            subtitle: t('intel_feat_3_sub'),
+            color: "text-emerald-400",
+            bg: "bg-emerald-500/10",
+            border: "border-emerald-500/50",
+            image: bt3,
+            description: (
+                <>
+                    {t('intel_feat_3_desc')}
+                </>
+            )
+        },
+        {
+            icon: BrainCircuit,
+            title: t('intel_feat_4_title'),
+            subtitle: t('intel_feat_4_sub'),
+            color: "text-amber-400",
+            bg: "bg-amber-500/10",
+            border: "border-amber-500/50",
+            image: bt4,
+            description: (
+                <>
+                    {t('intel_feat_4_desc')}
+                </>
+            )
+        }
+    ];
 
     return (
         <section className="relative w-full py-32 flex flex-col items-center justify-center overflow-hidden min-h-screen bg-black">
@@ -90,7 +92,7 @@ export default function Intelligence() {
                         viewport={{ once: true }}
                         transition={{ type: "spring", stiffness: 100, damping: 20, duration: 0.8 }}
                     >
-                        Copiloto Cognitivo
+                        {t('intel_title')}
                     </motion.h2>
 
                     <motion.p
@@ -100,7 +102,7 @@ export default function Intelligence() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.2, duration: 1 }}
                     >
-                        Inteligencia Artificial tejida en el sistema nervioso.
+                        {t('intel_subtitle')}
                     </motion.p>
                 </div>
 

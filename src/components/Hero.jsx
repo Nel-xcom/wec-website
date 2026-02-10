@@ -18,7 +18,8 @@ const Hero = () => {
         // Phase 4
         titleColor,
         selectedObjectId,
-        setSelectedObjectId
+        setSelectedObjectId,
+        triggerEditorMode
     } = useGesture();
 
     const { t } = useLanguage();
@@ -184,7 +185,7 @@ const Hero = () => {
                         className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none"
                     >
                         <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-white to-purple-400 text-center px-4 tracking-tight drop-shadow-2xl">
-                            Emprender ya no es imposible.
+                            {t('hero_reveal_1')}
                         </h2>
                     </motion.div>
                 )}
@@ -201,7 +202,7 @@ const Hero = () => {
                         className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none"
                     >
                         <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-white to-orange-400 text-center px-4 tracking-tight drop-shadow-2xl">
-                            Solo faltaba la herramienta correcta.
+                            {t('hero_reveal_2')}
                         </h2>
                     </motion.div>
                 )}

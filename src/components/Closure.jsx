@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 export default function Closure() {
     const [isHovered, setIsHovered] = useState(false);
+    const { t } = useLanguage();
 
     const manifestoLines = [
-        "Hay un tipo de persona que nunca encaja del todo.",
-        "Mientras la mayoría se adapta, ellos se inquietan."
+        t('closure_line_1'),
+        t('closure_line_2')
     ];
 
     return (
@@ -39,7 +41,7 @@ export default function Closure() {
                     viewport={{ once: true }}
                     transition={{ delay: 1.5, duration: 1 }}
                 >
-                    A los que no se conforman...
+                    {t('closure_tagline')}
                 </motion.p>
             </div>
 
@@ -60,7 +62,7 @@ export default function Closure() {
                 <div className="absolute inset-0 bg-white/50 rounded-full blur-md opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
 
                 <span className="relative z-10 text-black font-extrabold text-xl tracking-widest uppercase flex items-center gap-3">
-                    OBTENER ACCESO ANTICIPADO
+                    {t('closure_btn')}
                     <div className="w-3 h-3 bg-black rounded-full animate-pulse" />
                 </span>
             </motion.button>

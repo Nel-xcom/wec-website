@@ -3,12 +3,14 @@ import { useGesture } from '../context/GestureContext';
 import HandGestureController from './HandGestureController';
 import Toolbar from './Toolbar';
 import { Grab, Hand } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const GestureUI = () => {
     const {
         isActive, toggleGestureControl, isReady, isGrabbing,
-        mode, triggerEditorMode // Phase 3 Context
+        mode, triggerEditorMode
     } = useGesture();
+    const { t } = useLanguage();
 
     return (
         <>
@@ -72,8 +74,8 @@ const GestureUI = () => {
                                 }`}>
                                 <span className="text-xs font-bold tracking-wider uppercase">
                                     {isReady
-                                        ? isGrabbing ? "Arrastra fuera" : "Cierra el puño"
-                                        : "Looking for hands..."}
+                                        ? isGrabbing ? t('gesture_grabbing') : t('gesture_ready')
+                                        : t('gesture_looking')}
                                 </span>
                             </div>
                         </motion.div>

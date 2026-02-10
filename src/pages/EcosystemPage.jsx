@@ -3,83 +3,11 @@ import { useRef } from 'react';
 import Navbar from '../components/Navbar';
 import GeometricBackground from '../components/GeometricBackground';
 import { NeuralExchange, BioChart, NetworkUser, NeuralMedia, NeuralValuation, NeuralConnect } from '../components/NeuralArtifacts';
+import { useLanguage } from '../context/LanguageContext';
 
-const SECTIONS = [
-    {
-        id: "marketplace",
-        title: "Marketplace",
-        subtitle: "LIQUIDEZ SIN FRICCIÓN",
-        Artifact: NeuralExchange,
-        color: "text-amber-400",
-        bgGradient: "from-amber-500/10 to-transparent",
-        what: "Un mercado secundario descentralizado donde startups y negocios tradicionales se compran y venden con la misma facilidad que una acción.",
-        structure: "Utilizamos contratos inteligentes para el escrow de fondos y la transferencia de propiedad. La verificación de métricas se realiza on-chain para garantizar transparencia absoluta.",
-        benefit: "Founders obtienen liquidez inmediata (Exit) sin esperar años a una IPO. Inversores acceden a flujo de caja verificado.",
-        problem: "La venta de empresas privadas es un proceso lento (6-12 meses), costoso (brokers) y opaco."
-    },
-    {
-        id: "capital",
-        title: "Find Capital",
-        subtitle: "MATCHING ALGORÍTMICO",
-        Artifact: BioChart,
-        color: "text-cyan-400",
-        bgGradient: "from-cyan-500/10 to-transparent",
-        what: "Una plataforma de levantamiento de capital que conecta a fundadores con inversores basándose en tesis de inversión y datos, no en 'a quién conoces'.",
-        structure: "Transformamos tu Pitch Deck en data estructurada. Nuestro motor de emparejamiento analiza miles de tesis de inversión para encontrar el fit perfecto.",
-        benefit: "Acceso a capital global las 24/7. Cierra rondas en semanas, no meses.",
-        problem: "El Fundraising tradicional es un juego de insiders, ineficiente y lleno de sesgos geográficos."
-    },
-    {
-        id: "team",
-        title: "Team Building",
-        subtitle: "SOCIOS, NO EMPLEADOS",
-        Artifact: NetworkUser,
-        color: "text-purple-400",
-        bgGradient: "from-purple-500/10 to-transparent",
-        what: "El sistema definitivo para encontrar co-fundadores y talento clave dispuestos a trabajar por equity.",
-        structure: "Perfiles verificados con historial de ejecución. Acuerdos de vesting generados y firmados digitalmente en la plataforma.",
-        benefit: "Construye un equipo 'A-Player' sin quemar caja inicial. Alineación de incentivos total a largo plazo.",
-        problem: "La soledad del fundador y la dificultad (y costo legal) de estructurar equipos co-fundadores sólidos."
-    },
-    {
-        id: "clips",
-        title: "Smart Clips",
-        subtitle: "INTELIGENCIA DE MERCADO",
-        Artifact: NeuralMedia,
-        color: "text-emerald-400",
-        bgGradient: "from-emerald-500/10 to-transparent",
-        what: "Contenido de alto valor generado por IA que destila las tendencias más importantes del ecosistema emprendedor.",
-        structure: "Agentes autónomos escanean miles de fuentes (news, papers, social) y generan resúmenes visuales de alto impacto.",
-        benefit: "Mantente a la vanguardia sin ruido. Insights accionables para tu negocio en segundos.",
-        problem: "La sobrecarga de información (infoxicación) hace imposible distinguir la señal del ruido."
-    },
-    {
-        id: "pricing",
-        title: "Business Pricing",
-        subtitle: "VALUACIÓN OBJETIVA",
-        Artifact: NeuralValuation,
-        color: "text-rose-400",
-        bgGradient: "from-rose-500/10 to-transparent",
-        what: "El estándar de oro para la valuación de negocios digitales y tradicionales.",
-        structure: "Modelos de Machine Learning entrenados con datos de transacciones reales, ajustados por sector, crecimiento y riesgo.",
-        benefit: "Elimina la especulación. Entra a una negociación con un precio defendible y justo.",
-        problem: "La subjetividad extrema en las valuaciones mata acuerdos viables antes de empezar."
-    },
-    {
-        id: "community",
-        title: "Community",
-        subtitle: "RED DE CONFIANZA",
-        Artifact: NeuralConnect,
-        color: "text-blue-400",
-        bgGradient: "from-blue-500/10 to-transparent",
-        what: "Más que una red social, un grafo de reputación donde emprendedores e inversores validan su trayectoria.",
-        structure: "Identidad soberana y sistema de reputación on-chain. Conexiones P2P directas.",
-        benefit: "Validación social instantánea. Networking de calidad sin intermediarios ni gatekeepers.",
-        problem: "La fragmentación del ecosistema hace que el valor de tu red esté limitado a tu ubicación física."
-    }
-];
 
-const DetailSection = ({ data, index }) => {
+
+const DetailSection = ({ data, index, t }) => {
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -143,7 +71,7 @@ const DetailSection = ({ data, index }) => {
                         className="md:pl-8 first:pl-0 hover:bg-white/5 md:hover:bg-transparent rounded-xl md:rounded-none p-4 md:p-0 transition-colors duration-300"
                     >
                         <h4 className="text-white font-mono text-sm mb-4 opacity-40 uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-1 bg-wec-blue rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> Estructura
+                            <span className="w-1 h-1 bg-wec-blue rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> {t('ecopage_label_structure')}
                         </h4>
                         <p className="text-slate-500 hover:text-slate-300 transition-colors duration-300 text-sm leading-7">{data.structure}</p>
                     </motion.div>
@@ -157,7 +85,7 @@ const DetailSection = ({ data, index }) => {
                         className="md:pl-8 hover:bg-white/5 md:hover:bg-transparent rounded-xl md:rounded-none p-4 md:p-0 transition-colors duration-300"
                     >
                         <h4 className="text-white font-mono text-sm mb-4 opacity-40 uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-1 bg-emerald-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> Beneficio
+                            <span className="w-1 h-1 bg-emerald-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> {t('ecopage_label_benefit')}
                         </h4>
                         <p className="text-slate-500 hover:text-slate-300 transition-colors duration-300 text-sm leading-7">{data.benefit}</p>
                     </motion.div>
@@ -171,7 +99,7 @@ const DetailSection = ({ data, index }) => {
                         className="md:pl-8 hover:bg-white/5 md:hover:bg-transparent rounded-xl md:rounded-none p-4 md:p-0 transition-colors duration-300"
                     >
                         <h4 className="text-white font-mono text-sm mb-4 opacity-40 uppercase tracking-widest flex items-center gap-2">
-                            <span className="w-1 h-1 bg-rose-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> Problema
+                            <span className="w-1 h-1 bg-rose-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" /> {t('ecopage_label_problem')}
                         </h4>
                         <p className="text-slate-500 hover:text-slate-300 transition-colors duration-300 text-sm leading-7">{data.problem}</p>
                     </motion.div>
@@ -185,13 +113,23 @@ const DetailSection = ({ data, index }) => {
 };
 
 export default function EcosystemPage() {
+    const { t } = useLanguage();
+
+    const SECTIONS = [
+        { id: "marketplace", title: t('ecopage_s1_title'), subtitle: t('ecopage_s1_sub'), Artifact: NeuralExchange, color: "text-amber-400", bgGradient: "from-amber-500/10 to-transparent", what: t('ecopage_s1_what'), structure: t('ecopage_s1_structure'), benefit: t('ecopage_s1_benefit'), problem: t('ecopage_s1_problem') },
+        { id: "capital", title: t('ecopage_s2_title'), subtitle: t('ecopage_s2_sub'), Artifact: BioChart, color: "text-cyan-400", bgGradient: "from-cyan-500/10 to-transparent", what: t('ecopage_s2_what'), structure: t('ecopage_s2_structure'), benefit: t('ecopage_s2_benefit'), problem: t('ecopage_s2_problem') },
+        { id: "team", title: t('ecopage_s3_title'), subtitle: t('ecopage_s3_sub'), Artifact: NetworkUser, color: "text-purple-400", bgGradient: "from-purple-500/10 to-transparent", what: t('ecopage_s3_what'), structure: t('ecopage_s3_structure'), benefit: t('ecopage_s3_benefit'), problem: t('ecopage_s3_problem') },
+        { id: "clips", title: t('ecopage_s4_title'), subtitle: t('ecopage_s4_sub'), Artifact: NeuralMedia, color: "text-emerald-400", bgGradient: "from-emerald-500/10 to-transparent", what: t('ecopage_s4_what'), structure: t('ecopage_s4_structure'), benefit: t('ecopage_s4_benefit'), problem: t('ecopage_s4_problem') },
+        { id: "pricing", title: t('ecopage_s5_title'), subtitle: t('ecopage_s5_sub'), Artifact: NeuralValuation, color: "text-rose-400", bgGradient: "from-rose-500/10 to-transparent", what: t('ecopage_s5_what'), structure: t('ecopage_s5_structure'), benefit: t('ecopage_s5_benefit'), problem: t('ecopage_s5_problem') },
+        { id: "community", title: t('ecopage_s6_title'), subtitle: t('ecopage_s6_sub'), Artifact: NeuralConnect, color: "text-blue-400", bgGradient: "from-blue-500/10 to-transparent", what: t('ecopage_s6_what'), structure: t('ecopage_s6_structure'), benefit: t('ecopage_s6_benefit'), problem: t('ecopage_s6_problem') }
+    ];
+
     return (
         <div className="min-h-screen text-slate-300 selection:bg-wec-blue/30 selection:text-white pb-32 relative">
             <GeometricBackground />
             <div className="relative z-10">
                 <Navbar />
 
-                {/* HERO SECTION */}
                 <section className="relative h-screen px-6 flex flex-col items-center justify-center text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -200,33 +138,30 @@ export default function EcosystemPage() {
                         className="max-w-4xl"
                     >
                         <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-8">
-                            Infraestructura del <br />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300">Nuevo Mundo</span>
+                            {t('ecopage_hero_1')} <br />
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300">{t('ecopage_hero_2')}</span>
                         </h1>
                         <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                            Cada componente del ecosistema ha sido diseñado para democratizar el acceso a oportunidades de negocio, talento y capital.
+                            {t('ecopage_hero_desc')}
                         </p>
                     </motion.div>
                 </section>
 
-                {/* DETAIL SECTIONS */}
                 <div className="relative z-10 w-full overflow-hidden">
-                    {/* Connecting Line */}
                     <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/10 to-transparent md:-translate-x-1/2" />
 
                     {SECTIONS.map((section, index) => (
-                        <DetailSection key={section.id} data={section} index={index} />
+                        <DetailSection key={section.id} data={section} index={index} t={t} />
                     ))}
                 </div>
 
-                {/* CALL TO ACTION */}
                 <div className="flex justify-center mt-20">
                     <motion.button
                         className="px-12 py-5 rounded-full bg-white text-black font-bold text-lg tracking-widest uppercase hover:bg-gradient-to-r hover:from-wec-blue hover:via-purple-400 hover:to-amber-300 hover:text-white transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                     >
-                        OBTENER ACCESO ANTICIPADO
+                        {t('ecopage_btn')}
                     </motion.button>
                 </div>
             </div>

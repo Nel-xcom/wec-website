@@ -11,6 +11,7 @@ import GestureUI from './components/GestureUI';
 import { GestureProvider } from './context/GestureContext';
 import { LanguageProvider } from './context/LanguageContext';
 import LanguageSelector from './components/LanguageSelector';
+import AIAgent from './components/AIAgent';
 
 // LAZY IMPORTS (Below the Fold / Performance Optimization)
 const Ecosystem = lazy(() => import('./components/Ecosystem'));
@@ -117,6 +118,7 @@ function App() {
       <GestureProvider>
 
         <LanguageSelector />
+        <AIAgent />
 
         {/* GLOBAL BACKGROUND - Only mounted once */}
         <div className="relative min-h-screen bg-[#030303] text-white selection:bg-wec-blue/30 selection:text-white">

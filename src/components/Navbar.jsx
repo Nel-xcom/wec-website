@@ -1,14 +1,20 @@
-import { useRef, useState, memo } from 'react';
+import { useRef, useState, memo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import logoWhite from '../assets/logos/logo-white.png';
-import { useGesture } from '../context/GestureContext'; // Import Context
+import { useGesture } from '../context/GestureContext';
+import { useLanguage } from '../context/LanguageContext';
 
 // --- DECODING TEXT UTILITY ---
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const DecodingText = memo(({ text, style }) => {
     const [display, setDisplay] = useState(text);
     const intervalRef = useRef(null);
+
+    // Sync display when text prop changes (e.g. language switch)
+    useEffect(() => {
+        setDisplay(text);
+    }, [text]);
 
     const scramble = () => {
         let iteration = 0;
@@ -45,7 +51,9 @@ function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
 
     // Consume Context for Color Customization
+    // Consume Context for Color Customization
     const { navbarColor } = useGesture();
+    const { t } = useLanguage();
 
     // Toggle menu
     const toggleMenu = () => setIsOpen(!isOpen);
@@ -65,9 +73,10 @@ function Navbar() {
 
                 {/* Left Links (Desktop) */}
                 <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs font-bold mb-1" style={{ color: navbarColor }}>
-                    <Link to="/ecosystem"><DecodingText text="ECOSISTEMA" style={linkStyle} /></Link>
-                    <Link to="/security"><DecodingText text="SEGURIDAD" style={linkStyle} /></Link>
-                    <Link to="/mission"><DecodingText text="NUESTRA MISIÓN" style={linkStyle} /></Link>
+                    {/* USE t() for text */}
+                    <Link to="/ecosystem"><DecodingText text={t('nav_ecosystem')} style={linkStyle} /></Link>
+                    <Link to="/security"><DecodingText text={t('nav_security')} style={linkStyle} /></Link>
+                    <Link to="/mission"><DecodingText text={t('nav_mission')} style={linkStyle} /></Link>
                 </div>
 
                 {/* Logo Center (Mobile Left / Desktop Center) */}
@@ -79,9 +88,9 @@ function Navbar() {
 
                 {/* Right Links (Desktop) */}
                 <div className="hidden md:flex items-center gap-8 text-[10px] md:text-xs font-bold mb-1" style={{ color: navbarColor }}>
-                    <Link to="/manifesto"><DecodingText text="MANIFIESTO" style={linkStyle} /></Link>
-                    <Link to="/download"><DecodingText text="DESCARGAR APP" style={linkStyle} /></Link>
-                    <Link to="/"><DecodingText text="TÉRMINOS" style={linkStyle} /></Link>
+                    <Link to="/manifesto"><DecodingText text={t('nav_manifesto')} style={linkStyle} /></Link>
+                    <Link to="/download"><DecodingText text={t('nav_download')} style={linkStyle} /></Link>
+                    <Link to="/"><DecodingText text={t('nav_terms')} style={linkStyle} /></Link>
                 </div>
 
                 {/* Mobile Menu Button - Inherit color? Or keep white? Keep white for visibility on dark overlay */}
@@ -113,12 +122,12 @@ function Navbar() {
                     exit={{ opacity: 0, y: -20 }}
                     className="absolute top-24 left-4 right-4 bg-black/90 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:hidden flex flex-col items-center gap-6 shadow-2xl"
                 >
-                    <Link to="/ecosystem" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">ECOSISTEMA</Link>
-                    <Link to="/security" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">SEGURIDAD</Link>
-                    <Link to="/manifesto" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">MANIFIESTO</Link>
+                    <Link to="/ecosystem" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">{t('nav_ecosystem')}</Link>
+                    <Link to="/security" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">{t('nav_security')}</Link>
+                    <Link to="/manifesto" onClick={toggleMenu} className="text-white font-bold tracking-widest text-lg">{t('nav_manifesto')}</Link>
                     <div className="w-full h-px bg-white/10 my-2" />
-                    <Link to="/" onClick={toggleMenu} className="text-slate-400 text-sm">DESCARGAR APP</Link>
-                    <Link to="/mission" onClick={toggleMenu} className="text-slate-400 text-sm">NUESTRA MISIÓN</Link>
+                    <Link to="/" onClick={toggleMenu} className="text-slate-400 text-sm">{t('nav_download')}</Link>
+                    <Link to="/mission" onClick={toggleMenu} className="text-slate-400 text-sm">{t('nav_mission')}</Link>
                 </motion.div>
             )}
         </motion.nav>

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { memo } from 'react';
 import { ShieldCheck, Lock, Scale } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const CitadelProtocol = memo(({ title, subtitle, desc, icon: Icon, delay }) => (
     <motion.div
@@ -43,6 +44,8 @@ const CitadelProtocol = memo(({ title, subtitle, desc, icon: Icon, delay }) => (
 ));
 
 const Security = () => {
+    const { t } = useLanguage();
+
     return (
         <section id="security" className="w-full py-32 px-6 flex flex-col items-center relative overflow-hidden">
 
@@ -52,8 +55,8 @@ const Security = () => {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
             >
-                <h2 className="text-4xl font-bold tracking-tight mb-4 text-white text-bloom">Ecosistema Blindado</h2>
-                <p className="volcanic-ash max-w-xl mx-auto">Nos ocupamos de la seguridad de nuestros usuarios.</p>
+                <h2 className="text-4xl font-bold tracking-tight mb-4 text-white text-bloom">{t('sec_title')}</h2>
+                <p className="volcanic-ash max-w-xl mx-auto">{t('sec_subtitle')}</p>
             </motion.div>
 
             <div className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-3 gap-12 relative">
@@ -62,25 +65,25 @@ const Security = () => {
                 <div className="absolute top-[48px] left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-wec-purple/30 to-transparent hidden md:block" />
 
                 <CitadelProtocol
-                    title="Biometric KYC"
-                    subtitle="Eliminación de Perfiles Falsos"
-                    desc="Sabemos quién es quién. Un entorno libre de fricción verificado biométricamente para garantizar interacciones humanas reales."
+                    title={t('sec_feat_1_title')}
+                    subtitle={t('sec_feat_1_sub')}
+                    desc={t('sec_feat_1_desc')}
                     icon={ShieldCheck}
                     delay={0.1}
                 />
 
                 <CitadelProtocol
-                    title="Real-time Proof of Funds"
-                    subtitle="Liquidez Verificada"
-                    desc="El capital listado es real. Verificamos la solvencia de los inversores en tiempo real mediante APIs bancarias seguras."
+                    title={t('sec_feat_2_title')}
+                    subtitle={t('sec_feat_2_sub')}
+                    desc={t('sec_feat_2_desc')}
                     icon={Lock}
                     delay={0.2}
                 />
 
                 <CitadelProtocol
-                    title="Integrated Mediation"
-                    subtitle="Resolución de Disputas"
-                    desc="Justicia digital codificada. Mediación integrada en cada contrato inteligente para resolver conflictos sin burocracia."
+                    title={t('sec_feat_3_title')}
+                    subtitle={t('sec_feat_3_sub')}
+                    desc={t('sec_feat_3_desc')}
                     icon={Scale}
                     delay={0.3}
                 />

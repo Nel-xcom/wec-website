@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Apple, Play, Globe, ChevronRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { useLanguage } from '../context/LanguageContext';
 
 // ICON COMPONENTS FOR STORES
 const AppleIcon = ({ className }) => <Apple className={className} />;
@@ -40,6 +41,7 @@ const Button = memo(({ icon: Icon, label, sublabel, href, primary }) => (
 ));
 
 const DownloadPage = () => {
+    const { t } = useLanguage();
     // Reveal Animation
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -75,32 +77,32 @@ const DownloadPage = () => {
 
                         <motion.div variants={itemVariants} className="mb-6">
                             <span className="inline-block px-3 py-1 rounded-full border border-white/10 bg-white/5 text-slate-300 text-xs font-mono tracking-widest uppercase backdrop-blur-md">
-                                Disponible Globalmente
+                                {t('dl_badge')}
                             </span>
                         </motion.div>
 
                         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-6 leading-[1.1]">
-                            El ecosistema en <br />
+                            {t('dl_title_1')} <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300">
-                                tu bolsillo.
+                                {t('dl_title_2')}
                             </span>
                         </motion.h1>
 
                         <motion.p variants={itemVariants} className="text-xl text-slate-400 max-w-xl mb-12 leading-relaxed">
-                            Accede a capital, gestiona inversiones y conéctate con emprendedores verificados desde cualquier lugar. La infraestructura WEC nativa en iOS y Android.
+                            {t('dl_desc')}
                         </motion.p>
 
                         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-xl">
                             <Button
                                 icon={AppleIcon}
-                                sublabel="Download on the"
+                                sublabel={t('dl_appstore_sub')}
                                 label="App Store"
                                 href="#"
                                 primary
                             />
                             <Button
                                 icon={PlayStoreIcon}
-                                sublabel="Get it on"
+                                sublabel={t('dl_playstore_sub')}
                                 label="Google Play"
                                 href="#"
                             />
@@ -108,7 +110,7 @@ const DownloadPage = () => {
 
                         <motion.div variants={itemVariants} className="mt-8 flex items-center gap-4 text-sm text-slate-500 font-mono">
                             <Globe size={16} />
-                            <span>También disponible como <a href="#" className="underline hover:text-white transition-colors">Web App</a></span>
+                            <span>{t('dl_also')} <a href="#" className="underline hover:text-white transition-colors">{t('dl_webapp')}</a></span>
                         </motion.div>
                     </div>
 

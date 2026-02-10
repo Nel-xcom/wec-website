@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform, useSpring, useVelocity } from 'framer-motion';
 import Navbar from './Navbar';
 import { useRef, useState, useEffect } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 // --- UTILS ---
 const MagneticButton = ({ children, className }) => {
@@ -114,6 +115,7 @@ const ConstellationMesh = ({ scrollYProgress }) => {
 
 export default function ManifestoPage() {
     const containerRef = useRef(null);
+    const { t } = useLanguage();
     const { scrollYProgress, scrollY } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
@@ -152,42 +154,42 @@ export default function ManifestoPage() {
             <div className="relative z-10 w-full max-w-3xl px-6 pt-40 pb-32 md:pt-60 md:pb-60 space-y-32 md:space-y-48">
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-left">
-                    Hay un tipo de persona que nunca encaja del todo. No porque sea un problema, sino porque el mundo que lo rodea siempre le queda chico.
+                    {t('manifesto_p1')}
                 </CrystallizeText>
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-right">
-                    Son los que hacen preguntas incómodas, los que desarman las certezas ajenas, los que sienten que rendirse a lo establecido es una forma silenciosa de morir.
+                    {t('manifesto_p2')}
                 </CrystallizeText>
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-left">
-                    <span className="text-white font-semibold drop-shadow-md">Ellos no buscan aprobación. Buscan propósito.</span> Mientras la mayoría se adapta, ellos se inquietan. Mientras otros aceptan reglas, ellos imaginan cómo reescribirlas.
+                    <span className="text-white font-semibold drop-shadow-md">{t('manifesto_p3_bold')}</span>{t('manifesto_p3_rest')}
                 </CrystallizeText>
 
                 {/* THE SHOCKWAVE MOMENT */}
                 <CrystallizeText className="text-2xl md:text-4xl leading-tight text-center py-20" isShockwave={true}>
-                    El futuro no se descubre… se construye.
+                    {t('manifesto_p4')}
                 </CrystallizeText>
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-right">
-                    Son personas que fallan, sí. Pero cada caída se convierte en un mapa nuevo. Cada error, en una herramienta. Cada "no se puede", en una invitación a intentarlo de todas formas.
+                    {t('manifesto_p5')}
                 </CrystallizeText>
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-left">
-                    Tienen una visión rara, incómoda, a veces perturbadora para quienes prefieren la comodidad al cambio. Pero esa visión es justamente lo que abre caminos donde antes no los había.
+                    {t('manifesto_p6')}
                 </CrystallizeText>
 
                 <CrystallizeText className="text-xl md:text-2xl leading-relaxed text-center md:text-right">
-                    Y el centro mundial de emprendedores es, en esencia, la obra de ese tipo de personas. Una constelación de mentes inquietas que eligieron no esperar, no pedir, no dudar. Eligieron hacer. Asi es como se concreto el final de una idea y comenzo un sueño.
+                    {t('manifesto_p7')}
                 </CrystallizeText>
 
                 <div className="pt-20 text-center">
                     <p className="text-2xl md:text-4xl font-light italic text-white/90 mb-12">
-                        A los que no se conforman: este es su lugar.
+                        {t('manifesto_cta_text')}
                     </p>
 
                     {/* REACTIVE CTA */}
                     <MagneticButton className="relative z-20 px-12 py-5 rounded-full bg-white text-black font-extrabold text-lg md:text-xl tracking-widest uppercase hover:bg-wec-blue transition-all duration-300 shadow-[0_0_50px_rgba(255,255,255,0.4)] hover:shadow-[0_0_80px_rgba(255,255,255,0.8)] hover:scale-105">
-                        OBTENER ACCESO ANTICIPADO
+                        {t('manifesto_btn')}
                     </MagneticButton>
                 </div>
 

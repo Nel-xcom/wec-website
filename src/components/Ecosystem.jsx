@@ -3,6 +3,8 @@ import { useState, useRef, useEffect } from 'react';
 import { NeuralExchange, BioChart, NetworkUser, NeuralMedia, NeuralValuation, NeuralConnect } from './NeuralArtifacts';
 
 
+import { useLanguage } from '../context/LanguageContext';
+
 const CrystalCard = ({ title, subtitle, desc, artifact: Artifact, type }) => (
     <motion.div
         className={`crystal-slab radioactive-border p-8 md:p-10 rounded-3xl flex flex-col justify-between group overflow-hidden relative min-w-[350px] md:min-w-[400px] h-[400px] mx-4 transition-all duration-500`}
@@ -24,55 +26,57 @@ const CrystalCard = ({ title, subtitle, desc, artifact: Artifact, type }) => (
     </motion.div>
 );
 
-const DATA_CARDS = [
-    {
-        title: "Marketplace",
-        subtitle: "Worldwide business selling & VERIFIED METRICS",
-        desc: "Visibilidad basada en mérito financiero real. Un escaparate global donde la demanda encuentra a la oferta sin fricción.",
-        artifact: NeuralExchange,
-        type: "marketplace"
-    },
-    {
-        title: "Find Capital",
-        subtitle: "Find investors around the world",
-        desc: "Transformamos tu Pitch Deck en data estructurada. Conectamos tu visión con fondos que buscan exactamente tu perfil de riesgo.",
-        artifact: BioChart,
-        type: "capital"
-    },
-    {
-        title: "Team Building",
-        subtitle: "Don't start a startup alone",
-        desc: "Encuentra co-fundadores técnicos. Firma acuerdos digitales instantáneos y distribuye equity de forma programática.",
-        artifact: NetworkUser,
-        type: "team"
-    },
-    {
-        title: "Smart Clips",
-        subtitle: "AI-DRIVEN MARKET INTELLIGENCE",
-        desc: "Contenido generado por IA que impulsa la cultura emprendedora. Detecta tendencias y nichos de crecimiento antes que nadie.",
-        artifact: NeuralMedia,
-        type: "clips"
-    },
-    {
-        title: "Business Pricing",
-        subtitle: "FAIR PROFIT DISCOVERY",
-        desc: "Descubre el precio real de tu negocio con algoritmos predictivos. Obtén una ganancia justa basada en datos de mercado reales.",
-        artifact: NeuralValuation,
-        type: "pricing"
-    },
-    {
-        title: "Community",
-        subtitle: "DECENTRALIZED ECOSYSTEM GRAPH",
-        desc: "La red social del ecosistema emprendedor. Conecta con fundadores, valida ideas y escala tu red de contactos globalmente.",
-        artifact: NeuralConnect,
-        type: "community"
-    }
-];
-
-// Duplicate data to simulate infinite loop
-const INFINITE_CARDS = [...DATA_CARDS, ...DATA_CARDS, ...DATA_CARDS, ...DATA_CARDS];
-
 export default function Ecosystem() {
+    const { t } = useLanguage();
+
+    const DATA_CARDS = [
+        {
+            title: t('eco_card_1_title'),
+            subtitle: t('eco_card_1_sub'),
+            desc: t('eco_card_1_desc'),
+            artifact: NeuralExchange,
+            type: "marketplace"
+        },
+        {
+            title: t('eco_card_2_title'),
+            subtitle: t('eco_card_2_sub'),
+            desc: t('eco_card_2_desc'),
+            artifact: BioChart,
+            type: "capital"
+        },
+        {
+            title: t('eco_card_3_title'),
+            subtitle: t('eco_card_3_sub'),
+            desc: t('eco_card_3_desc'),
+            artifact: NetworkUser,
+            type: "team"
+        },
+        {
+            title: t('eco_card_4_title'),
+            subtitle: t('eco_card_4_sub'),
+            desc: t('eco_card_4_desc'),
+            artifact: NeuralMedia,
+            type: "clips"
+        },
+        {
+            title: t('eco_card_5_title'),
+            subtitle: t('eco_card_5_sub'),
+            desc: t('eco_card_5_desc'),
+            artifact: NeuralValuation,
+            type: "pricing"
+        },
+        {
+            title: t('eco_card_6_title'),
+            subtitle: t('eco_card_6_sub'),
+            desc: t('eco_card_6_desc'),
+            artifact: NeuralConnect,
+            type: "community"
+        }
+    ];
+
+    // Duplicate data to simulate infinite loop
+    const INFINITE_CARDS = [...DATA_CARDS, ...DATA_CARDS, ...DATA_CARDS, ...DATA_CARDS];
+
     // CAROUSEL LOGIC
     const x = useMotionValue(0);
     const containerRef = useRef(null);
@@ -138,8 +142,8 @@ export default function Ecosystem() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
             >
-                <h2 className="text-4xl font-bold tracking-tight mb-4 text-white">Nuestro Ecosistema</h2>
-                <p className="text-slate-500 max-w-xl mx-auto">Conoce la columna vertebral de la comunidad.</p>
+                <h2 className="text-4xl font-bold tracking-tight mb-4 text-white">{t('eco_title')}</h2>
+                <p className="text-slate-500 max-w-xl mx-auto">{t('eco_subtitle')}</p>
             </motion.div>
 
             {/* DRAGGABLE CAROUSEL */}
@@ -164,8 +168,9 @@ export default function Ecosystem() {
             </motion.div>
 
             <div className="mt-8 text-slate-600 text-xs tracking-widest uppercase">
-                Drag or hover to pause
+                {t('eco_drag')}
             </div>
+
 
         </section>
     );

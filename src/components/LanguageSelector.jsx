@@ -17,10 +17,12 @@ const LanguageSelector = () => {
             </div>
 
             {/* BUTTON CONTENT */}
-            <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-black/90 backdrop-blur-xl border border-white/10 transition-all duration-300 group-hover:bg-white/5">
-                <span className="text-2xl" role="img" aria-label={language === 'es' ? "Español" : "English"}>
-                    {language === 'es' ? '🇪🇸' : '🇺🇸'}
-                </span>
+            <div className="relative flex items-center justify-center w-14 h-14 rounded-full bg-black/90 backdrop-blur-xl border border-white/10 transition-all duration-300 group-hover:bg-white/5 overflow-hidden">
+                <img
+                    src={language === 'es' ? "https://flagcdn.com/w80/es.png" : "https://flagcdn.com/w80/us.png"}
+                    alt={language === 'es' ? "Español" : "English"}
+                    className="w-8 h-auto object-cover opacity-90 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300"
+                />
             </div>
         </button>
     );

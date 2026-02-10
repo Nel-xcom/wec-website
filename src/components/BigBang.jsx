@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import logoWhite from '../assets/logos/logo-white.png';
+import { useLanguage } from '../context/LanguageContext';
 
 const BigBang = () => {
+    const { t } = useLanguage();
     return (
         <section style={{
             height: '100vh',
@@ -62,14 +64,14 @@ const BigBang = () => {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 1, duration: 1, ease: "easeOut" }}
                     style={{
-                        fontFamily: "'Nico Moji', sans-serif",
+                        fontFamily: "\'Nico Moji\', sans-serif",
                         fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
                         lineHeight: 1.1,
                         color: '#f5f5f7',
                         marginBottom: '2rem'
                     }}
                 >
-                    El universo emprendedor ha<br /> dejado de ser un privilegio.
+                    {t('bigbang_title_1')}<br /> {t('bigbang_title_2')}
                 </motion.h1>
 
                 <motion.p
@@ -85,8 +87,8 @@ const BigBang = () => {
                         margin: '0 auto'
                     }}
                 >
-                    Durante eones, el éxito estuvo reservado para unos pocos.<br />
-                    Hoy, encendemos un nuevo cosmos digital donde las oportunidades son infinitas y accesibles para todos.
+                    {t('bigbang_desc_1')}<br />
+                    {t('bigbang_desc_2')}
                 </motion.p>
             </div>
 
@@ -114,7 +116,7 @@ const BigBang = () => {
                         boxShadow: '0 0 10px #2997ff'
                     }}
                 />
-                <span style={{ fontSize: '0.8rem', letterSpacing: '2px', color: '#2997ff', textTransform: 'uppercase' }}>SCROLL</span>
+                <span style={{ fontSize: '0.8rem', letterSpacing: '2px', color: '#2997ff', textTransform: 'uppercase' }}>{t('scroll')}</span>
             </motion.div>
         </section>
     );
