@@ -227,7 +227,10 @@ const Hero = () => {
                             {isSecurityStyle ? (
                                 <>
                                     <span className="text-white text-bloom">Red mundial de </span>
-                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300">
+                                    <span
+                                        className="text-transparent bg-clip-text bg-gradient-to-r from-wec-blue via-purple-400 to-amber-300 inline-block pb-1"
+                                        style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+                                    >
                                         emprendedores
                                     </span>
                                 </>
