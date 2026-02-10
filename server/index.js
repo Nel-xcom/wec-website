@@ -126,6 +126,8 @@ Available on iOS (App Store) and Android (Google Play), plus Web App. Access cap
 const sessions = new Map();
 
 // Early Access Waitlist Endpoint
+const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbwSmE-_tFeqkyEU9gj89ypXdnztAe1qtCdnmt3vfOmjZzFDB2hloo7ZqBvgPRTtfbTIqg/exec';
+
 app.post('/api/early-access', async (req, res) => {
     try {
         const { firstName, lastName, email } = req.body;
@@ -134,11 +136,20 @@ app.post('/api/early-access', async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
-        // Simulate saving to database (log for now)
-        console.log('🚀 New Early Access Request:', { firstName, lastName, email, date: new Date().toISOString() });
+        console.log('🚀 New Early Access Request:', { firstName, lastName, email });
 
-        // Simulate network delay
-        await new Promise(r => setTimeout(r, 1000));
+        // Forward to Google Sheets
+        try {
+            await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ firstName, lastName, email, date: new Date().toISOString() })
+            });
+            console.log('✅ Changes saved to Google Sheets');
+        } catch (sheetError) {
+            console.error('❌ Failed to save to Google Sheets:', sheetError);
+            // Don't fail the request to the user, just log it
+        }
 
         res.json({ success: true, message: 'Registered successfully' });
     } catch (error) {
