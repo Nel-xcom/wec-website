@@ -10,6 +10,7 @@ import GestureUI from './components/GestureUI';
 
 import { GestureProvider } from './context/GestureContext';
 import { LanguageProvider } from './context/LanguageContext';
+import { EarlyAccessProvider } from './context/EarlyAccessContext';
 import LanguageSelector from './components/LanguageSelector';
 import AIAgent from './components/AIAgent';
 
@@ -116,32 +117,34 @@ function App() {
   return (
     <LanguageProvider>
       <GestureProvider>
+        <EarlyAccessProvider>
 
-        <LanguageSelector />
-        <AIAgent />
+          <LanguageSelector />
+          <AIAgent />
 
-        {/* GLOBAL BACKGROUND - Only mounted once */}
-        <div className="relative min-h-screen bg-[#030303] text-white selection:bg-wec-blue/30 selection:text-white">
-          <GeometricBackground />
+          {/* GLOBAL BACKGROUND - Only mounted once */}
+          <div className="relative min-h-screen bg-[#030303] text-white selection:bg-wec-blue/30 selection:text-white">
+            <GeometricBackground />
 
-          <Suspense fallback={<SectionLoader />}>
-            <div className="relative z-10 w-full flex flex-col">
-              <Routes>
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/manifesto" element={<ManifestoPage />} />
-                <Route path="/ecosystem" element={<EcosystemPage />} />
-                <Route path="/security" element={<SecurityPage />} />
-                <Route path="/download" element={<DownloadPage />} />
-                <Route path="/mission" element={<MissionPage />} />
-              </Routes>
-            </div>
-          </Suspense>
+            <Suspense fallback={<SectionLoader />}>
+              <div className="relative z-10 w-full flex flex-col">
+                <Routes>
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/manifesto" element={<ManifestoPage />} />
+                  <Route path="/ecosystem" element={<EcosystemPage />} />
+                  <Route path="/security" element={<SecurityPage />} />
+                  <Route path="/download" element={<DownloadPage />} />
+                  <Route path="/mission" element={<MissionPage />} />
+                </Routes>
+              </div>
+            </Suspense>
 
-          <Suspense fallback={null}>
-            <Footer />
-          </Suspense>
-        </div>
+            <Suspense fallback={null}>
+              <Footer />
+            </Suspense>
+          </div>
 
+        </EarlyAccessProvider>
       </GestureProvider>
     </LanguageProvider>
   );

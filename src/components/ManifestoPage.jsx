@@ -2,9 +2,10 @@ import { motion, useScroll, useTransform, useSpring, useVelocity } from 'framer-
 import Navbar from './Navbar';
 import { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { useEarlyAccess } from '../context/EarlyAccessContext';
 
 // --- UTILS ---
-const MagneticButton = ({ children, className }) => {
+const MagneticButton = ({ children, className, ...props }) => {
     const ref = useRef(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const handleMouse = (e) => {
@@ -24,6 +25,7 @@ const MagneticButton = ({ children, className }) => {
             onMouseMove={handleMouse}
             onMouseLeave={reset}
             className={className}
+            {...props}
         >
             {children}
         </motion.button>
@@ -116,6 +118,7 @@ const ConstellationMesh = ({ scrollYProgress }) => {
 export default function ManifestoPage() {
     const containerRef = useRef(null);
     const { t } = useLanguage();
+    const { openForm } = useEarlyAccess();
     const { scrollYProgress, scrollY } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
@@ -188,7 +191,7 @@ export default function ManifestoPage() {
                     </p>
 
                     {/* REACTIVE CTA */}
-                    <MagneticButton className="relative z-20 px-12 py-5 rounded-full bg-white text-black font-extrabold text-lg md:text-xl tracking-widest uppercase hover:bg-wec-blue transition-all duration-300 shadow-[0_0_50px_rgba(255,255,255,0.4)] hover:shadow-[0_0_80px_rgba(255,255,255,0.8)] hover:scale-105">
+                    <MagneticButton onClick={openForm} className="relative z-20 px-12 py-5 rounded-full bg-white text-black font-extrabold text-lg md:text-xl tracking-widest uppercase hover:bg-wec-blue transition-all duration-300 shadow-[0_0_50px_rgba(255,255,255,0.4)] hover:shadow-[0_0_80px_rgba(255,255,255,0.8)] hover:scale-105">
                         {t('manifesto_btn')}
                     </MagneticButton>
                 </div>

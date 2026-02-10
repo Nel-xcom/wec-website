@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import GeometricBackground from '../components/GeometricBackground';
 import { NeuralExchange, BioChart, NetworkUser, NeuralMedia, NeuralValuation, NeuralConnect } from '../components/NeuralArtifacts';
 import { useLanguage } from '../context/LanguageContext';
+import { useEarlyAccess } from '../context/EarlyAccessContext';
 
 
 
@@ -114,6 +115,7 @@ const DetailSection = ({ data, index, t }) => {
 
 export default function EcosystemPage() {
     const { t } = useLanguage();
+    const { openForm } = useEarlyAccess();
 
     const SECTIONS = [
         { id: "marketplace", title: t('ecopage_s1_title'), subtitle: t('ecopage_s1_sub'), Artifact: NeuralExchange, color: "text-amber-400", bgGradient: "from-amber-500/10 to-transparent", what: t('ecopage_s1_what'), structure: t('ecopage_s1_structure'), benefit: t('ecopage_s1_benefit'), problem: t('ecopage_s1_problem') },
@@ -160,6 +162,7 @@ export default function EcosystemPage() {
                         className="px-12 py-5 rounded-full bg-white text-black font-bold text-lg tracking-widest uppercase hover:bg-gradient-to-r hover:from-wec-blue hover:via-purple-400 hover:to-amber-300 hover:text-white transition-all duration-300 shadow-[0_0_40px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)]"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        onClick={openForm}
                     >
                         {t('ecopage_btn')}
                     </motion.button>

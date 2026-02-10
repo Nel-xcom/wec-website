@@ -2,9 +2,12 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 
+import { useEarlyAccess } from '../context/EarlyAccessContext';
+
 export default function Closure() {
     const [isHovered, setIsHovered] = useState(false);
     const { t } = useLanguage();
+    const { openForm } = useEarlyAccess();
 
     const manifestoLines = [
         t('closure_line_1'),
@@ -47,13 +50,14 @@ export default function Closure() {
 
             {/* THE ARTIFACT: Light Emitting Button */}
             <motion.button
-                className="group relative px-16 py-6 rounded-full shadow-[0_0_50px_-10px_rgba(213,241,255,0.3)] hover:shadow-[0_0_100px_-5px_rgba(255,255,255,0.5)] transition-all duration-300 z-50"
+                className="group relative px-16 py-6 rounded-full shadow-[0_0_50px_-10px_rgba(213,241,255,0.3)] hover:shadow-[0_0_100px_-5px_rgba(255,255,255,0.5)] transition-all duration-300 z-50 cursor-pointer"
                 initial={{ scale: 0.9, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
+                onClick={openForm}
             >
                 {/* Gradient Magma Background */}
                 <div className="absolute inset-0 bg-gradient-to-r from-wec-blue via-white to-wec-purple rounded-full opacity-100" />

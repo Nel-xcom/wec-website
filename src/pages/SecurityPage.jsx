@@ -4,6 +4,7 @@ import GeometricBackground from '../components/GeometricBackground';
 import Footer from '../components/Footer';
 import { NeuralExchange, NeuralConnect, NeuralMedia, NetworkUser, BioChart } from '../components/NeuralArtifacts';
 import { useLanguage } from '../context/LanguageContext';
+import { useEarlyAccess } from '../context/EarlyAccessContext';
 
 
 
@@ -112,6 +113,7 @@ const DetailSection = ({ data, index, t }) => {
 
 export default function SecurityPage() {
     const { t } = useLanguage();
+    const { openForm } = useEarlyAccess();
 
     const PROTOCOLS = [
         { title: t('secpage_p1_title'), subtitle: t('secpage_p1_sub'), Artifact: NeuralMedia, what: t('secpage_p1_what'), structure: t('secpage_p1_structure'), benefit: t('secpage_p1_benefit'), problem: t('secpage_p1_problem') },
@@ -174,7 +176,10 @@ export default function SecurityPage() {
                     <p className="text-slate-400 mb-10 text-lg">
                         {t('secpage_cta_desc')}
                     </p>
-                    <button className="px-10 py-4 rounded-full bg-white text-black font-bold text-lg tracking-widest uppercase hover:bg-gradient-to-r hover:from-wec-blue hover:via-purple-400 hover:to-amber-300 hover:text-white transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:scale-105 active:scale-95">
+                    <button
+                        onClick={openForm}
+                        className="px-10 py-4 rounded-full bg-white text-black font-bold text-lg tracking-widest uppercase hover:bg-gradient-to-r hover:from-wec-blue hover:via-purple-400 hover:to-amber-300 hover:text-white transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:shadow-[0_0_40px_rgba(168,85,247,0.4)] hover:scale-105 active:scale-95"
+                    >
                         {t('secpage_cta_btn')}
                     </button>
                 </div>

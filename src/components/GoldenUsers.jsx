@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
+import { useEarlyAccess } from '../context/EarlyAccessContext';
 
 const Manifesto = () => {
+    const { openForm } = useEarlyAccess();
     return (
         <section style={{
             minHeight: '100vh',
@@ -146,6 +148,7 @@ const Manifesto = () => {
                             e.target.style.transform = 'translateY(0)';
                             e.target.style.boxShadow = '0 12px 32px rgba(213, 241, 255, 0.3)';
                         }}
+                        onClick={openForm}
                     >
                         Obtener acceso anticipado
                     </button>

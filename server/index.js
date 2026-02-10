@@ -125,6 +125,28 @@ Available on iOS (App Store) and Android (Google Play), plus Web App. Access cap
 // Store conversation history per session (in-memory)
 const sessions = new Map();
 
+// Early Access Waitlist Endpoint
+app.post('/api/early-access', async (req, res) => {
+    try {
+        const { firstName, lastName, email } = req.body;
+
+        if (!firstName || !lastName || !email) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        // Simulate saving to database (log for now)
+        console.log('🚀 New Early Access Request:', { firstName, lastName, email, date: new Date().toISOString() });
+
+        // Simulate network delay
+        await new Promise(r => setTimeout(r, 1000));
+
+        res.json({ success: true, message: 'Registered successfully' });
+    } catch (error) {
+        console.error('Early Access Error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.post('/api/chat', async (req, res) => {
     try {
         const { message, sessionId } = req.body;
