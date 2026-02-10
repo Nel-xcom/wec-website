@@ -1,11 +1,94 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2, Sparkles, Check } from 'lucide-react';
+import { X, Loader2, Check } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import logoWhite from '../assets/logos/logo-white.png';
 
 const API_URL = import.meta.env.VITE_API_URL
     ? import.meta.env.VITE_API_URL.replace('/api/chat', '/api/early-access')
     : 'http://localhost:3001/api/early-access';
+
+// --- DRAGON LINES ANIMATION ---
+const DragonLines = () => {
+    return (
+        <div className="absolute inset-0 overflow-hidden rounded-[2.5rem] pointer-events-none opacity-30">
+            <svg className="w-full h-full" viewBox="0 0 400 400" preserveAspectRatio="none">
+                {/* Line 1: Sinuous Dragon */}
+                <motion.path
+                    d="M-50,200 C50,100 150,300 250,200 S450,100 550,200"
+                    fill="none"
+                    stroke="url(#dragonGradient1)"
+                    strokeWidth="2"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{
+                        pathLength: [0, 1, 1],
+                        pathOffset: [0, 0, 1],
+                        opacity: [0, 1, 0]
+                    }}
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "linear",
+                        repeatDelay: 0.5
+                    }}
+                />
+
+                {/* Line 2: Intertwining */}
+                <motion.path
+                    d="M-50,250 C100,350 200,50 300,200 S500,300 600,100"
+                    fill="none"
+                    stroke="url(#dragonGradient2)"
+                    strokeWidth="1.5"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{
+                        pathLength: [0, 1, 1],
+                        pathOffset: [0, 0, 1],
+                        opacity: [0, 0.8, 0]
+                    }}
+                    transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: 2
+                    }}
+                />
+
+                {/* Line 3: Vertical flow */}
+                <motion.path
+                    d="M200,450 C100,350 300,250 200,150 S100,-50 200,-150"
+                    fill="none"
+                    stroke="url(#dragonGradient1)"
+                    strokeWidth="1"
+                    initial={{ pathLength: 0, opacity: 0 }}
+                    animate={{
+                        pathLength: [0, 1, 1],
+                        pathOffset: [0, 0, 1],
+                        opacity: [0, 0.5, 0]
+                    }}
+                    transition={{
+                        duration: 12,
+                        repeat: Infinity,
+                        ease: "linear",
+                        delay: 4
+                    }}
+                />
+
+                <defs>
+                    <linearGradient id="dragonGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#D5F1FF" stopOpacity="0" />
+                        <stop offset="50%" stopColor="#D5F1FF" stopOpacity="1" />
+                        <stop offset="100%" stopColor="#D5F1FF" stopOpacity="0" />
+                    </linearGradient>
+                    <linearGradient id="dragonGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#FFBFF6" stopOpacity="0" />
+                        <stop offset="50%" stopColor="#FFBFF6" stopOpacity="1" />
+                        <stop offset="100%" stopColor="#FFBFF6" stopOpacity="0" />
+                    </linearGradient>
+                </defs>
+            </svg>
+        </div>
+    );
+};
 
 export default function EarlyAccessForm({ isOpen, onClose }) {
     const [form, setForm] = useState({ firstName: '', lastName: '', email: '' });
@@ -102,7 +185,7 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={handleClose}
-                        className="fixed inset-0 bg-black/80 backdrop-blur-md z-[10000]"
+                        className="fixed inset-0 bg-black/90 backdrop-blur-md z-[10000]"
                     />
 
                     {/* MODAL CONTAINER */}
@@ -112,38 +195,38 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.9, y: 20 }}
                             transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                            className="relative w-full max-w-md pointer-events-auto"
+                            className="relative w-full max-w-lg pointer-events-auto" // Increased max-width
                         >
-                            {/* ROTATING BORDER GLOW (The "AI Style" signature) */}
-                            <div className="absolute -inset-[2px] rounded-[2.5rem] bg-[conic-gradient(from_0deg,#fcd34d,#3b82f6,#9333ea,#ffffff,#fcd34d)] animate-[spin_4s_linear_infinite] opacity-60 blur-sm" />
-
                             {/* MAIN CARD CONTENT */}
-                            <div className="relative bg-[#0a0a0a] rounded-[2.5rem] p-1 overflow-hidden shadow-2xl">
+                            <div className="relative bg-[#0a0a0a] rounded-[2.5rem] p-1 overflow-hidden shadow-2xl border border-white/10">
                                 {/* Inner Glass Texture */}
                                 <div className="absolute inset-0 bg-white/5 backdrop-blur-xl rounded-[2.5rem]" />
 
-                                <div className="relative bg-black/80 rounded-[2.3rem] p-8 md:p-10 flex flex-col items-center text-center">
+                                {/* DRAGON LINES ANIMATION BACKGROUND */}
+                                <DragonLines />
+
+                                <div className="relative z-10 p-10 md:p-12 flex flex-col items-center text-center">
 
                                     {/* CLOSE BUTTON */}
                                     <button
                                         onClick={handleClose}
-                                        className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors group"
+                                        className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors group z-20"
                                     >
                                         <X size={16} className="text-slate-400 group-hover:text-white transition-colors" />
                                     </button>
 
-                                    {/* HEADER ICON */}
-                                    <div className="mb-6 relative">
-                                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-wec-blue via-purple-500 to-amber-400 flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-                                            <Sparkles size={28} className="text-white" />
-                                        </div>
-                                        {/* Orbiting Ring */}
-                                        <div className="absolute inset-[-10px] border border-white/10 rounded-full animate-[spin_10s_linear_infinite]" />
+                                    {/* LOGO (REAL) */}
+                                    <div className="mb-8">
+                                        <img
+                                            src={logoWhite}
+                                            alt="WEC Logo"
+                                            className="h-16 w-auto opacity-90 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                                        />
                                     </div>
 
                                     {/* TITLE */}
-                                    <h2 className="text-2xl font-bold text-white mb-2 tracking-wide">{t('title')}</h2>
-                                    <p className="text-slate-400 text-sm mb-8 font-light tracking-wide">{t('subtitle')}</p>
+                                    <h2 className="text-3xl font-bold text-white mb-2 tracking-wide font-sans">{t('title')}</h2>
+                                    <p className="text-slate-400 text-sm mb-10 font-light tracking-wide">{t('subtitle')}</p>
 
                                     {/* SUCCESS STATE */}
                                     {status === 'success' ? (
@@ -160,15 +243,15 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                                         </motion.div>
                                     ) : (
                                         /* FORM */
-                                        <form onSubmit={handleSubmit} className="w-full space-y-4">
-                                            <div className="space-y-4">
+                                        <form onSubmit={handleSubmit} className="w-full space-y-5">
+                                            <div className="space-y-5">
                                                 <div className="relative group">
                                                     <input
                                                         type="text"
                                                         value={form.firstName}
                                                         onChange={(e) => { setForm(f => ({ ...f, firstName: e.target.value })); setStatus('idle'); }}
                                                         placeholder={t('firstName')}
-                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/50 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
+                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-base placeholder:text-slate-600 outline-none focus:border-white/30 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
                                                     />
                                                 </div>
                                                 <div className="relative group">
@@ -177,7 +260,7 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                                                         value={form.lastName}
                                                         onChange={(e) => { setForm(f => ({ ...f, lastName: e.target.value })); setStatus('idle'); }}
                                                         placeholder={t('lastName')}
-                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/50 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
+                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-base placeholder:text-slate-600 outline-none focus:border-white/30 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
                                                     />
                                                 </div>
                                                 <div className="relative group">
@@ -186,7 +269,7 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                                                         value={form.email}
                                                         onChange={(e) => { setForm(f => ({ ...f, email: e.target.value })); setStatus('idle'); }}
                                                         placeholder={t('email')}
-                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-sm placeholder:text-slate-600 outline-none focus:border-wec-blue/50 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
+                                                        className="w-full px-6 py-4 rounded-full bg-white/5 border border-white/10 text-white text-base placeholder:text-slate-600 outline-none focus:border-white/30 focus:bg-white/10 transition-all text-center group-hover:border-white/20"
                                                     />
                                                 </div>
                                             </div>
@@ -202,11 +285,11 @@ export default function EarlyAccessForm({ isOpen, onClose }) {
                                                 </motion.p>
                                             )}
 
-                                            {/* SUBMIT BUTTON */}
+                                            {/* SUBMIT BUTTON - WHITE STYLE */}
                                             <button
                                                 type="submit"
                                                 disabled={status === 'loading'}
-                                                className="w-full py-4 rounded-full bg-gradient-to-r from-wec-blue via-purple-600 to-amber-500 text-white font-bold tracking-widest uppercase text-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_40px_rgba(147,51,234,0.6)] disabled:opacity-50 disabled:cursor-not-allowed mt-4 flex items-center justify-center gap-2"
+                                                className="w-full py-4 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed mt-6 flex items-center justify-center gap-2"
                                             >
                                                 {status === 'loading' && <Loader2 size={16} className="animate-spin" />}
                                                 {status === 'loading' ? t('sending') : t('submit')}
