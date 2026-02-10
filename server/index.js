@@ -140,12 +140,19 @@ app.post('/api/early-access', async (req, res) => {
 
         // Forward to Google Sheets
         try {
-            await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+            const sheetRes = await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ firstName, lastName, email, date: new Date().toISOString() })
             });
-            console.log('✅ Changes saved to Google Sheets');
+            const sheetText = await sheetRes.text();
+            console.log('📄 Google Sheets Response:', sheetText.substring(0, 200)); // Log first 200 chars
+
+            if (sheetRes.ok) {
+                console.log('✅ Changes saved to Google Sheets');
+            } else {
+                console.warn('⚠️ Google Sheets returned status:', sheetRes.status);
+            }
         } catch (sheetError) {
             console.error('❌ Failed to save to Google Sheets:', sheetError);
             // Don't fail the request to the user, just log it
