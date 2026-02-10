@@ -28,7 +28,7 @@ const WorldMapBackground = () => {
             <img
                 src={MAP_URL}
                 alt="World Map Background"
-                className="w-full h-full object-cover md:object-contain opacity-40"
+                className="w-full h-full object-cover md:object-contain opacity-60"
                 style={{
                     // Invert: Grey/Black -> White.
                     // Transparent BG stays Transparent.
