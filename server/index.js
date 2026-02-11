@@ -229,27 +229,29 @@ app.post('/api/chat', async (req, res) => {
         console.log(`💬 Chat [${sessionId.substring(0, 8)}]: User="${message.substring(0, 20)}..." AI="${aiText.substring(0, 20)}..."`);
 
         // Forward Chat to Google Sheets (Chat Logs) matches separate sheet
-        try {
-            const logRes = await fetch(GOOGLE_SHEETS_CHAT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sessionId,
-                    userMessage: message,
-                    aiResponse: aiText,
-                    date: new Date().toISOString()
-                })
-            });
+        // VALIDATION: Only log if we have content
+        if (sessionId && message && aiText) {
+            try {
+                const logRes = await fetch(GOOGLE_SHEETS_CHAT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionId,
+                        userMessage: message,
+                        aiResponse: aiText,
+                        date: new Date().toISOString()
+                    })
+                });
 
-            const logText = await logRes.text();
-            console.log('📄 Chat Log Response:', logText.substring(0, 200));
+                const logText = await logRes.text();
+                // console.log('📄 Chat Log Response:', logText.substring(0, 200));
 
-            if (!logRes.ok) {
-                console.warn('⚠️ Chat Log failed status:', logRes.status);
+                if (!logRes.ok) {
+                    console.warn('⚠️ Chat Log failed status:', logRes.status);
+                }
+            } catch (logErr) {
+                console.error('❌ Failed to log chat to Sheets:', logErr);
             }
-        } catch (logErr) {
-            console.error('❌ Failed to log chat to Sheets:', logErr);
-            // Non-critical, continue
         }
 
         res.json({ response: aiText });
@@ -287,11 +289,13 @@ app.post('/api/analytics/visit', async (req, res) => {
     try {
         const { page, userAgent } = req.body;
         // Fire & Forget
-        fetch(GOOGLE_SHEETS_CHAT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ type: 'visit', page, userAgent, date: new Date().toISOString() })
-        }).catch(err => console.error('❌ Visit log failed:', err));
+        if (page && userAgent) {
+            fetch(GOOGLE_SHEETS_CHAT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ type: 'visit', page, userAgent, date: new Date().toISOString() })
+            }).catch(err => console.error('❌ Visit log failed:', err));
+        }
         res.json({ success: true });
     } catch (e) {
         console.error(e);
@@ -326,29 +330,36 @@ app.get('/api/analytics/dashboard', async (req, res) => {
 });
 
 // 3. Trigger Analysis (Manual or Cron)
-async function runDailyAnalysis() {
-    console.log('🕵️ Starting Daily Analysis...');
+async function runDailyAnalysis(force = false) {
+    console.log('🕵️ Starting Daily Analysis...', force ? '(FORCED)' : '');
     try {
         // A. Get Data
         const response = await fetch(GOOGLE_SHEETS_CHAT_URL);
         const data = await response.json();
 
         // B. Check if already analyzed today (Check "Analysis" tab)
-        const analysisLog = data['Analysis'] || [];
-        const todayStr = new Date().toISOString().split('T')[0];
-        const alreadyRan = analysisLog.some(row => row.Fecha && row.Fecha.startsWith(todayStr));
+        if (!force) {
+            const analysisLog = data['Analysis'] || [];
+            const todayStr = new Date().toISOString().split('T')[0];
+            const alreadyRan = analysisLog.some(row => row.Fecha && row.Fecha.startsWith(todayStr));
 
-        if (alreadyRan) {
-            console.log('✅ Analysis already done for today.');
-            return { skipped: true };
+            if (alreadyRan) {
+                console.log('✅ Analysis already done for today.');
+                return { skipped: true };
+            }
         }
 
         // C. Filter Chats from Today/Yesterday
         const chats = data['ChatLogs'] || [];
         // Simple filter: last 50 chats to save context window
-        const recentChats = chats.slice(-50).map(c => `User: ${c.Usuario}\nAI: ${c.IA}`).join('\n---\n');
+        // Ensure we filter out empty chats
+        const validChats = chats.filter(c => c.Usuario && c.IA);
+        const recentChats = validChats.slice(-50).map(c => `User: ${c.Usuario}\nAI: ${c.IA}`).join('\n---\n');
 
-        if (!recentChats) return { skipped: true, reason: 'No chats' };
+        if (!recentChats) {
+            console.log('⚠️ No valid chats to analyze');
+            return { skipped: true, reason: 'No chats' };
+        }
 
         // D. Analyze with Groq
         const groqRes = await fetch(GROQ_URL, {
@@ -378,7 +389,7 @@ async function runDailyAnalysis() {
                 type: 'analysis',
                 date: new Date().toISOString(),
                 summary: analysisContent.summary,
-                confusion: analysisContent.confusion.join(', '),
+                confusion: Array.isArray(analysisContent.confusion) ? analysisContent.confusion.join(', ') : analysisContent.confusion,
                 improvements: analysisContent.improvements
             })
         });
@@ -393,7 +404,8 @@ async function runDailyAnalysis() {
 }
 
 app.post('/api/analytics/analyze', async (req, res) => {
-    const result = await runDailyAnalysis();
+    const { force } = req.body || {};
+    const result = await runDailyAnalysis(force);
     res.json(result);
 });
 

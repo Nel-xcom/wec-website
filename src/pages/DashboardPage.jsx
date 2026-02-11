@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { RefreshCw, Activity, MessageSquare, AlertTriangle, Lightbulb } from 'lucide-react';
+import logoWhite from '../assets/logos/logo-white.png';
 
 export default function DashboardPage() {
     const [data, setData] = useState(null);
@@ -31,8 +32,13 @@ export default function DashboardPage() {
     const runAnalysis = async () => {
         setAnalyzing(true);
         try {
-            await fetch(`${getBaseUrl()}/api/analytics/analyze`, { method: 'POST' });
-            await fetchData(); // Refresh
+            await fetch(`${getBaseUrl()}/api/analytics/analyze`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ force: true }) // Force analysis
+            });
+            // Wait a bit for sheet to update
+            setTimeout(() => fetchData(), 2000);
         } catch (err) {
             alert('Analysis failed');
         } finally {
@@ -69,7 +75,7 @@ export default function DashboardPage() {
             <header className="flex justify-between items-center mb-10">
                 <div>
                     {/* 1. LOGO INSTEAD OF TITLE */}
-                    <img src="/logo-white.png" alt="WEC Analytics" className="h-12 md:h-16 w-auto opacity-90 mb-2" />
+                    <img src={logoWhite} alt="WEC Analytics" className="h-12 md:h-16 w-auto opacity-90 mb-2" />
                     <p className="text-slate-400 text-sm md:text-base ml-2">Eco-System Monitor</p>
                 </div>
                 <div className="flex gap-4">
