@@ -8,6 +8,7 @@ export default function DashboardPage() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [analyzing, setAnalyzing] = useState(false);
+    const [error, setError] = useState(null);
     const [cooldown, setCooldown] = useState(0);
 
     const getBaseUrl = () => {
@@ -22,8 +23,8 @@ export default function DashboardPage() {
             if (!res.ok) throw new Error('Failed to load data. API might be down or Script not updated.');
             const json = await res.json();
             setData(json);
-        } catch (error) {
-            setError(error.message);
+        } catch (err) {
+            setError(err.message);
         } finally {
             setLoading(false);
         }
