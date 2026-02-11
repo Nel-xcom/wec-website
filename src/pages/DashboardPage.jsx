@@ -22,8 +22,8 @@ export default function DashboardPage() {
             if (!res.ok) throw new Error('Failed to load data. API might be down or Script not updated.');
             const json = await res.json();
             setData(json);
-        } catch (err) {
-            setError(err.message);
+        } catch (error) {
+            setError(error.message);
         } finally {
             setLoading(false);
         }
