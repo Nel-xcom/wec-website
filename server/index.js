@@ -128,7 +128,7 @@ const sessions = new Map();
 // Early Access Waitlist Endpoint
 const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbwSmE-_tFeqkyEU9gj89ypXdnztAe1qtCdnmt3vfOmjZzFDB2hloo7ZqBvgPRTtfbTIqg/exec';
 // Chat Logs Endpoint
-const GOOGLE_SHEETS_CHAT_URL = process.env.GOOGLE_SHEETS_CHAT_URL || 'https://script.google.com/macros/s/AKfycbwErUko-FyEfIVHF1HDpcR08gypiF2Ikluw9VrnlpnTpM1_0Sm1nArx-IqzZ-DpL3ca/exec';
+const GOOGLE_SHEETS_CHAT_URL = process.env.GOOGLE_SHEETS_CHAT_URL || 'https://script.google.com/macros/s/AKfycbzk85_PRc7urRBhOSKdA_Bk-KgxmHbyY4qkVsBT81ReNB4azwFSx0zs1s6R57hywHrv/exec';
 
 app.post('/api/early-access', async (req, res) => {
     try {
