@@ -127,6 +127,8 @@ const sessions = new Map();
 
 // Early Access Waitlist Endpoint
 const GOOGLE_SHEETS_WEBHOOK_URL = process.env.GOOGLE_SHEETS_WEBHOOK_URL || 'https://script.google.com/macros/s/AKfycbwSmE-_tFeqkyEU9gj89ypXdnztAe1qtCdnmt3vfOmjZzFDB2hloo7ZqBvgPRTtfbTIqg/exec';
+// Chat Logs Endpoint
+const GOOGLE_SHEETS_CHAT_URL = process.env.GOOGLE_SHEETS_CHAT_URL || 'https://script.google.com/macros/s/AKfycbwErUko-FyEfIVHF1HDpcR08gypiF2Ikluw9VrnlpnTpM1_0Sm1nArx-IqzZ-DpL3ca/exec';
 
 app.post('/api/early-access', async (req, res) => {
     try {
@@ -149,7 +151,7 @@ app.post('/api/early-access', async (req, res) => {
             console.log('📄 Google Sheets Response:', sheetText.substring(0, 200)); // Log first 200 chars
 
             if (sheetRes.ok) {
-                console.log('✅ Changes saved to Google Sheets');
+                console.log('✅ Changes saved to Google Sheets (Early Access)');
             } else {
                 console.warn('⚠️ Google Sheets returned status:', sheetRes.status);
             }
@@ -226,13 +228,12 @@ app.post('/api/chat', async (req, res) => {
         // --- LOG LOGIC ---
         console.log(`💬 Chat [${sessionId.substring(0, 8)}]: User="${message.substring(0, 20)}..." AI="${aiText.substring(0, 20)}..."`);
 
-        // Forward Chat to Google Sheets (Fire & Forgetish but waited for safety)
+        // Forward Chat to Google Sheets (Chat Logs) matches separate sheet
         try {
-            await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+            await fetch(GOOGLE_SHEETS_CHAT_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    type: 'chat', // Discriminator
                     sessionId,
                     userMessage: message,
                     aiResponse: aiText,
