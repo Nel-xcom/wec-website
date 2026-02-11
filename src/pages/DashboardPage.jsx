@@ -139,7 +139,7 @@ export default function DashboardPage() {
                     <h3 className="text-lg font-bold text-wec-blue mb-4 flex items-center gap-2">
                         <Lightbulb size={20} /> AI Suggestions
                     </h3>
-                    {latestAnalysis.MejorasIA ? (
+                    {latestAnalysis?.MejorasIA ? (
                         <p className="text-slate-300 text-sm leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
                             {latestAnalysis.MejorasIA}
                         </p>
@@ -154,11 +154,11 @@ export default function DashboardPage() {
                     <h3 className="text-lg font-bold text-white mb-4 relative z-10 flex justify-between items-center">
                         Daily Summary
                         <span className="text-[10px] bg-white/10 px-2 py-1 rounded text-slate-300">
-                            {latestAnalysis.Fecha ? new Date(latestAnalysis.Fecha).toLocaleDateString() : 'Today'}
+                            {latestAnalysis?.Fecha ? new Date(latestAnalysis.Fecha).toLocaleDateString() : 'Today'}
                         </span>
                     </h3>
                     <p className="text-slate-200 text-sm leading-relaxed relative z-10 font-medium">
-                        {latestAnalysis.Resumen || 'No summary generated yet.'}
+                        {latestAnalysis?.Resumen || 'No summary generated yet.'}
                     </p>
                 </div>
             </div>
@@ -196,7 +196,7 @@ export default function DashboardPage() {
                     </h3>
                     <p className="text-xs text-orange-400/80 mb-4 uppercase tracking-wide">Most asked about the project</p>
 
-                    {latestAnalysis.PuntosConfusion ? (
+                    {latestAnalysis?.PuntosConfusion && typeof latestAnalysis.PuntosConfusion === 'string' ? (
                         <div className="space-y-3">
                             {latestAnalysis.PuntosConfusion.split(',').map((q, i) => (
                                 <div key={i} className="bg-orange-500/10 p-3 rounded-xl border border-orange-500/10 text-sm text-orange-100/90">
