@@ -230,7 +230,7 @@ app.post('/api/chat', async (req, res) => {
 
         // Forward Chat to Google Sheets (Chat Logs) matches separate sheet
         try {
-            await fetch(GOOGLE_SHEETS_CHAT_URL, {
+            const logRes = await fetch(GOOGLE_SHEETS_CHAT_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -240,6 +240,13 @@ app.post('/api/chat', async (req, res) => {
                     date: new Date().toISOString()
                 })
             });
+
+            const logText = await logRes.text();
+            console.log('📄 Chat Log Response:', logText.substring(0, 200));
+
+            if (!logRes.ok) {
+                console.warn('⚠️ Chat Log failed status:', logRes.status);
+            }
         } catch (logErr) {
             console.error('❌ Failed to log chat to Sheets:', logErr);
             // Non-critical, continue
