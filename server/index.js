@@ -273,17 +273,131 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-// Clean up old sessions every 30 minutes
-setInterval(() => {
-    if (sessions.size > 100) {
-        const keys = Array.from(sessions.keys());
-        keys.slice(0, keys.length - 50).forEach(k => sessions.delete(k));
+const ANALYZE_PROMPT = `Analyze the following user-AI chat logs from the "World Entrepreneurs Centre" website.
+Identify:
+1. Top 3 user confusion points (what don't they understand?).
+2. AI performance issues (did it hallucinate or fail?).
+3. One concrete improvement recommendation.
+Output JSON format: { "summary": "...", "confusion": ["..."], "improvements": "..." }`;
+
+// --- ANALYTICS ENDPOINTS ---
+
+// 1. Visit Tracking
+app.post('/api/analytics/visit', async (req, res) => {
+    try {
+        const { page, userAgent } = req.body;
+        // Fire & Forget
+        fetch(GOOGLE_SHEETS_CHAT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'visit', page, userAgent, date: new Date().toISOString() })
+        }).catch(err => console.error('❌ Visit log failed:', err));
+        res.json({ success: true });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Log failed' });
     }
-}, 30 * 60 * 1000);
+});
+
+// 2. Dashboard Data (Proxy to Google Script doGet)
+app.get('/api/analytics/dashboard', async (req, res) => {
+    try {
+        // This requires the Google Script to implement doGet() and return JSON
+        const response = await fetch(GOOGLE_SHEETS_CHAT_URL);
+        if (!response.ok) throw new Error('Failed to fetch from sheets');
+        const data = await response.json();
+        res.json(data);
+    } catch (e) {
+        console.error('Dashboard Fetch Error:', e);
+        res.status(500).json({ error: 'Failed to load dashboard data. Ensure Google Script has doGet implemented.' });
+    }
+});
+
+// 3. Trigger Analysis (Manual or Cron)
+async function runDailyAnalysis() {
+    console.log('🕵️ Starting Daily Analysis...');
+    try {
+        // A. Get Data
+        const response = await fetch(GOOGLE_SHEETS_CHAT_URL);
+        const data = await response.json();
+
+        // B. Check if already analyzed today (Check "Analysis" tab)
+        const analysisLog = data['Analysis'] || [];
+        const todayStr = new Date().toISOString().split('T')[0];
+        const alreadyRan = analysisLog.some(row => row.Fecha && row.Fecha.startsWith(todayStr));
+
+        if (alreadyRan) {
+            console.log('✅ Analysis already done for today.');
+            return { skipped: true };
+        }
+
+        // C. Filter Chats from Today/Yesterday
+        const chats = data['ChatLogs'] || [];
+        // Simple filter: last 50 chats to save context window
+        const recentChats = chats.slice(-50).map(c => `User: ${c.Usuario}\nAI: ${c.IA}`).join('\n---\n');
+
+        if (!recentChats) return { skipped: true, reason: 'No chats' };
+
+        // D. Analyze with Groq
+        const groqRes = await fetch(GROQ_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${GROQ_API_KEY}`,
+            },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile',
+                messages: [
+                    { role: 'system', content: 'You are a data analyst JSON bot.' },
+                    { role: 'user', content: `${ANALYZE_PROMPT}\n\nLOGS:\n${recentChats}` }
+                ],
+                response_format: { type: "json_object" }
+            }),
+        });
+
+        const analysisData = await groqRes.json();
+        const analysisContent = JSON.parse(analysisData.choices[0].message.content);
+
+        // E. Save Result
+        await fetch(GOOGLE_SHEETS_CHAT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'analysis',
+                date: new Date().toISOString(),
+                summary: analysisContent.summary,
+                confusion: analysisContent.confusion.join(', '),
+                improvements: analysisContent.improvements
+            })
+        });
+
+        console.log('✅ Daily Analysis Saved!');
+        return { success: true };
+
+    } catch (e) {
+        console.error('❌ Analysis Failed:', e);
+        return { error: e.message };
+    }
+}
+
+app.post('/api/analytics/analyze', async (req, res) => {
+    const result = await runDailyAnalysis();
+    res.json(result);
+});
+
+// Scheduler: Check every hour
+setInterval(() => {
+    const hour = new Date().getHours();
+    // Run at 00:00 UTC (roughly) or just check every hour and rely on the "alreadyRan" check
+    runDailyAnalysis();
+}, 60 * 60 * 1000);
+
+// Run once on startup (with delay) to check
+setTimeout(runDailyAnalysis, 10000);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`✅ WEC AI Server running on port ${PORT}`);
     console.log(`   Model: llama-3.3-70b-versatile (Groq)`);
-    console.log(`   Free tier: 30 req/min, 14,400 req/day`);
+    console.log(`   Analytics: Active`);
 });

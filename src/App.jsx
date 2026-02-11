@@ -27,6 +27,7 @@ const EcosystemPage = lazy(() => import('./pages/EcosystemPage'));
 const SecurityPage = lazy(() => import('./pages/SecurityPage'));
 const MissionPage = lazy(() => import('./pages/MissionPage'));
 const DownloadPage = lazy(() => import('./pages/DownloadPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage')); // New Dashboard
 
 // Fallback Loader (Minimal layout shift)
 const SectionLoader = () => <div className="min-h-[50vh] w-full flex items-center justify-center opacity-20"><div className="animate-pulse w-full h-full bg-white/5 rounded-xl"></div></div>;
@@ -54,6 +55,19 @@ function App() {
   useEffect(() => {
     // Scroll to top on route change
     window.scrollTo(0, 0);
+
+    // ANALYTICS: Track Page Visit
+    // Fire and forget (don't block UI)
+    const apiUrl = import.meta.env.VITE_API_URL
+      ? import.meta.env.VITE_API_URL.replace('/api/chat', '')
+      : 'http://localhost:3001';
+
+    fetch(`${apiUrl}/api/analytics/visit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: pathname, userAgent: navigator.userAgent })
+    }).catch(err => console.warn('Analytics failed', err));
+
   }, [pathname]);
 
   useEffect(() => {
@@ -135,6 +149,7 @@ function App() {
                   <Route path="/security" element={<SecurityPage />} />
                   <Route path="/download" element={<DownloadPage />} />
                   <Route path="/mission" element={<MissionPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
                 </Routes>
               </div>
             </Suspense>
