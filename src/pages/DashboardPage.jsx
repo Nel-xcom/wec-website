@@ -8,7 +8,7 @@ export default function DashboardPage() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [analyzing, setAnalyzing] = useState(false);
-    const [error, setError] = useState(null);
+    const [cooldown, setCooldown] = useState(0);
 
     const getBaseUrl = () => {
         const url = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -30,6 +30,8 @@ export default function DashboardPage() {
     };
 
     const runAnalysis = async () => {
+        if (cooldown > 0) return;
+
         setAnalyzing(true);
         try {
             await fetch(`${getBaseUrl()}/api/analytics/analyze`, {
@@ -37,6 +39,12 @@ export default function DashboardPage() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ force: true }) // Force analysis
             });
+
+            // Set Cooldown (5 minutes)
+            const now = Date.now();
+            localStorage.setItem('wec_last_analysis', now);
+            setCooldown(300);
+
             // Wait a bit for sheet to update
             setTimeout(() => fetchData(), 2000);
         } catch (err) {
@@ -48,7 +56,33 @@ export default function DashboardPage() {
 
     useEffect(() => {
         fetchData();
+        // Check cooldown
+        const lastRun = localStorage.getItem('wec_last_analysis');
+        if (lastRun) {
+            const diff = Math.floor((Date.now() - parseInt(lastRun)) / 1000);
+            if (diff < 300) {
+                setCooldown(300 - diff);
+            }
+        }
     }, []);
+
+    // Cooldown Timer
+    useEffect(() => {
+        if (cooldown <= 0) return;
+        const interval = setInterval(() => {
+            setCooldown(prev => {
+                if (prev <= 1) return 0;
+                return prev - 1;
+            });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [cooldown]);
+
+    const formatTime = (seconds) => {
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        return `${m}:${s.toString().padStart(2, '0')}`;
+    };
 
     if (loading) return <div className="min-h-screen flex items-center justify-center text-white">Loading Dashboard...</div>;
     if (error) return <div className="min-h-screen flex items-center justify-center text-red-400">Error: {error}</div>;
@@ -76,22 +110,58 @@ export default function DashboardPage() {
                 <div>
                     {/* 1. LOGO INSTEAD OF TITLE */}
                     <img src={logoWhite} alt="WEC Analytics" className="h-12 md:h-16 w-auto opacity-90 mb-2" />
-                    <p className="text-slate-400 text-sm md:text-base ml-2">Eco-System Monitor</p>
+                    <p className="text-slate-400 text-sm md:text-base ml-2 font-medium tracking-wide">
+                        World Entrepreneur Center AI Powered dashboard
+                    </p>
                 </div>
-                <div className="flex gap-4">
+                <div className="flex gap-4 self-end md:self-auto">
                     <button onClick={fetchData} className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
                         <RefreshCw size={20} />
                     </button>
                     <button
                         onClick={runAnalysis}
-                        disabled={analyzing}
-                        className="px-6 py-3 bg-wec-blue/10 text-wec-blue border border-wec-blue/20 rounded-full hover:bg-wec-blue/20 transition-all flex items-center gap-2"
+                        disabled={analyzing || cooldown > 0}
+                        className={`px-6 py-3 rounded-full transition-all flex items-center gap-2 border ${cooldown > 0
+                            ? 'bg-slate-800 text-slate-400 border-slate-700 cursor-not-allowed'
+                            : 'bg-wec-blue/10 text-wec-blue border-wec-blue/20 hover:bg-wec-blue/20'
+                            }`}
                     >
-                        {analyzing ? 'Analyzing...' : 'Run Analysis'}
+                        {analyzing ? 'Analyzing...' : cooldown > 0 ? `Wait ${formatTime(cooldown)}` : 'Run Analysis'}
                         <Lightbulb size={18} />
                     </button>
                 </div>
             </header>
+
+            {/* 2. SUGGESTIONS & SUMMARY (Moved to Top) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                {/* SUGGESTIONS */}
+                <div className="bg-gradient-to-br from-wec-blue/10 to-purple-600/10 rounded-3xl p-6 border border-wec-blue/20">
+                    <h3 className="text-lg font-bold text-wec-blue mb-4 flex items-center gap-2">
+                        <Lightbulb size={20} /> AI Suggestions
+                    </h3>
+                    {latestAnalysis.MejorasIA ? (
+                        <p className="text-slate-300 text-sm leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
+                            {latestAnalysis.MejorasIA}
+                        </p>
+                    ) : (
+                        <p className="text-slate-500 italic">No suggestions available.</p>
+                    )}
+                </div>
+
+                {/* SUMMARY (Improved Visibility) */}
+                <div className="bg-[#111] rounded-3xl p-6 border border-white/20 shadow-lg shadow-black/50 relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+                    <h3 className="text-lg font-bold text-white mb-4 relative z-10 flex justify-between items-center">
+                        Daily Summary
+                        <span className="text-[10px] bg-white/10 px-2 py-1 rounded text-slate-300">
+                            {latestAnalysis.Fecha ? new Date(latestAnalysis.Fecha).toLocaleDateString() : 'Today'}
+                        </span>
+                    </h3>
+                    <p className="text-slate-200 text-sm leading-relaxed relative z-10 font-medium">
+                        {latestAnalysis.Resumen || 'No summary generated yet.'}
+                    </p>
+                </div>
+            </div>
 
             {/* KPI GRID */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
@@ -140,33 +210,7 @@ export default function DashboardPage() {
                 </div>
             </div>
 
-            {/* 4. SUGGESTIONS SECTION */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
-                {/* SUGGESTIONS */}
-                <div className="bg-gradient-to-br from-wec-blue/10 to-purple-600/10 rounded-3xl p-6 border border-wec-blue/20">
-                    <h3 className="text-lg font-bold text-wec-blue mb-4 flex items-center gap-2">
-                        <Lightbulb size={20} /> AI Suggestions
-                    </h3>
-                    {latestAnalysis.MejorasIA ? (
-                        <p className="text-slate-300 text-sm leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
-                            {latestAnalysis.MejorasIA}
-                        </p>
-                    ) : (
-                        <p className="text-slate-500 italic">No suggestions available.</p>
-                    )}
-                </div>
 
-                {/* SUMMARY */}
-                <div className="bg-white/5 rounded-3xl p-6 border border-white/10">
-                    <h3 className="text-lg font-bold text-slate-300 mb-4">Daily Summary</h3>
-                    <p className="text-slate-400 text-sm leading-relaxed">
-                        {latestAnalysis.Resumen || 'No summary generated.'}
-                    </p>
-                    <p className="text-xs text-slate-600 mt-4 text-right">
-                        Last Analysis: {latestAnalysis.Fecha ? new Date(latestAnalysis.Fecha).toLocaleString() : 'Never'}
-                    </p>
-                </div>
-            </div>
         </div>
     );
 }
