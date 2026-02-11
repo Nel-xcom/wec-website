@@ -68,8 +68,9 @@ export default function DashboardPage() {
         <div className="min-h-screen pt-24 px-4 md:px-12 bg-[#030303] text-white">
             <header className="flex justify-between items-center mb-10">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2">WEC Analytics</h1>
-                    <p className="text-slate-400">AI-Powered Ecosystem Monitor</p>
+                    {/* 1. LOGO INSTEAD OF TITLE */}
+                    <img src="/logo-white.png" alt="WEC Analytics" className="h-12 md:h-16 w-auto opacity-90 mb-2" />
+                    <p className="text-slate-400 text-sm md:text-base ml-2">Eco-System Monitor</p>
                 </div>
                 <div className="flex gap-4">
                     <button onClick={fetchData} className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors">
@@ -80,7 +81,7 @@ export default function DashboardPage() {
                         disabled={analyzing}
                         className="px-6 py-3 bg-wec-blue/10 text-wec-blue border border-wec-blue/20 rounded-full hover:bg-wec-blue/20 transition-all flex items-center gap-2"
                     >
-                        {analyzing ? 'Analyzing...' : 'Run AI Analysis'}
+                        {analyzing ? 'Analyzing...' : 'Run Analysis'}
                         <Lightbulb size={18} />
                     </button>
                 </div>
@@ -88,15 +89,16 @@ export default function DashboardPage() {
 
             {/* KPI GRID */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <Card title="Traffic (All Time)" value={visits.length} icon={<Activity className="text-green-400" />} />
+                <Card title="Traffic" value={visits.length} icon={<Activity className="text-green-400" />} />
                 <Card title="Conversations" value={chats.length} icon={<MessageSquare className="text-blue-400" />} />
                 <Card title="Avg Daily Visits" value={Math.round(visits.length / (chartData.length || 1))} icon={<Activity className="text-purple-400" />} />
             </div>
 
             {/* CHARTS ROW */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-                <div className="bg-white/5 rounded-3xl p-6 border border-white/10">
-                    <h3 className="text-xl font-bold mb-6">Traffic Overview (Last 7 Days)</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+                {/* CHART (2/3 width) */}
+                <div className="bg-white/5 rounded-3xl p-6 border border-white/10 lg:col-span-2">
+                    <h3 className="text-xl font-bold mb-6">Traffic Overview</h3>
                     <div className="h-64 w-full">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={chartData}>
@@ -110,47 +112,53 @@ export default function DashboardPage() {
                     </div>
                 </div>
 
-                {/* AI INSIGHTS */}
-                <div className="bg-white/5 rounded-3xl p-6 border border-white/10 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 p-3 opacity-20">
-                        <Lightbulb size={100} />
-                    </div>
-                    <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                        Daily AI Insight
-                        <span className="text-xs bg-wec-blue/20 text-wec-blue px-2 py-1 rounded-full">
-                            {latestAnalysis.Fecha ? latestAnalysis.Fecha.split('T')[0] : 'No Data'}
-                        </span>
+                {/* 3. HOT QUESTIONS ("This are the mostly asked questions...") */}
+                <div className="bg-gradient-to-br from-orange-500/10 to-red-600/10 rounded-3xl p-6 border border-orange-500/20 relative overflow-hidden">
+                    <div className="absolute top-2 right-2 text-4xl opacity-50">🔥</div>
+                    <h3 className="text-lg font-bold text-orange-200 mb-1 flex items-center gap-2">
+                        Hot Questions
                     </h3>
+                    <p className="text-xs text-orange-400/80 mb-4 uppercase tracking-wide">Most asked about the project</p>
 
-                    {latestAnalysis.Resumen ? (
-                        <div className="space-y-6">
-                            <div>
-                                <h4 className="text-sm text-slate-400 uppercase tracking-widest mb-2 font-bold">Summary</h4>
-                                <p className="text-slate-200 leading-relaxed">{latestAnalysis.Resumen}</p>
-                            </div>
-
-                            <div>
-                                <h4 className="text-sm text-red-300 uppercase tracking-widest mb-2 font-bold flex items-center gap-2">
-                                    <AlertTriangle size={14} /> Confusion Points
-                                </h4>
-                                <p className="text-slate-300 text-sm bg-red-500/10 p-4 rounded-xl border border-red-500/20">
-                                    {latestAnalysis.PuntosConfusion}
-                                </p>
-                            </div>
-
-                            <div>
-                                <h4 className="text-sm text-green-300 uppercase tracking-widest mb-2 font-bold">Recommended Improvement</h4>
-                                <p className="text-slate-300 text-sm bg-green-500/10 p-4 rounded-xl border border-green-500/20">
-                                    {latestAnalysis.MejorasIA}
-                                </p>
-                            </div>
+                    {latestAnalysis.PuntosConfusion ? (
+                        <div className="space-y-3">
+                            {latestAnalysis.PuntosConfusion.split(',').map((q, i) => (
+                                <div key={i} className="bg-orange-500/10 p-3 rounded-xl border border-orange-500/10 text-sm text-orange-100/90">
+                                    "{q.trim()}"
+                                </div>
+                            ))}
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center h-48 text-slate-500">
-                            <p>No analysis generated yet.</p>
-                            <button onClick={runAnalysis} className="mt-4 text-wec-blue underline">Run Now</button>
-                        </div>
+                        <p className="text-slate-500 text-sm">No hot questions analyzed yet.</p>
                     )}
+                </div>
+            </div>
+
+            {/* 4. SUGGESTIONS SECTION */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                {/* SUGGESTIONS */}
+                <div className="bg-gradient-to-br from-wec-blue/10 to-purple-600/10 rounded-3xl p-6 border border-wec-blue/20">
+                    <h3 className="text-lg font-bold text-wec-blue mb-4 flex items-center gap-2">
+                        <Lightbulb size={20} /> AI Suggestions
+                    </h3>
+                    {latestAnalysis.MejorasIA ? (
+                        <p className="text-slate-300 text-sm leading-relaxed bg-white/5 p-4 rounded-xl border border-white/5">
+                            {latestAnalysis.MejorasIA}
+                        </p>
+                    ) : (
+                        <p className="text-slate-500 italic">No suggestions available.</p>
+                    )}
+                </div>
+
+                {/* SUMMARY */}
+                <div className="bg-white/5 rounded-3xl p-6 border border-white/10">
+                    <h3 className="text-lg font-bold text-slate-300 mb-4">Daily Summary</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed">
+                        {latestAnalysis.Resumen || 'No summary generated.'}
+                    </p>
+                    <p className="text-xs text-slate-600 mt-4 text-right">
+                        Last Analysis: {latestAnalysis.Fecha ? new Date(latestAnalysis.Fecha).toLocaleString() : 'Never'}
+                    </p>
                 </div>
             </div>
         </div>

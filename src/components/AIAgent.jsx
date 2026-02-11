@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Sparkles, Loader2 } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/chat';
@@ -25,6 +26,7 @@ const formatMessage = (text) => {
 };
 
 export default function AIAgent() {
+    const { pathname } = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
@@ -110,6 +112,9 @@ export default function AIAgent() {
             sendMessage();
         }
     };
+
+    // Hide AI Agent on Dashboard
+    if (pathname.includes('/dashboard')) return null;
 
     return (
         <>

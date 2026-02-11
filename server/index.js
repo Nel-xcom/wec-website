@@ -275,9 +275,9 @@ app.post('/api/chat', async (req, res) => {
 
 const ANALYZE_PROMPT = `Analyze the following user-AI chat logs from the "World Entrepreneurs Centre" website.
 Identify:
-1. Top 3 user confusion points (what don't they understand?).
+1. Top 3 most frequently asked questions (Hot Questions).
 2. AI performance issues (did it hallucinate or fail?).
-3. One concrete improvement recommendation.
+3. One concrete recommendation to improve the WEBSITE or CONTENT based on user queries.
 Output JSON format: { "summary": "...", "confusion": ["..."], "improvements": "..." }`;
 
 // --- ANALYTICS ENDPOINTS ---
