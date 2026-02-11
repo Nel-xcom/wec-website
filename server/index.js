@@ -223,6 +223,27 @@ app.post('/api/chat', async (req, res) => {
             sessions.set(sessionId, history.slice(-20));
         }
 
+        // --- LOG LOGIC ---
+        console.log(`💬 Chat [${sessionId.substring(0, 8)}]: User="${message.substring(0, 20)}..." AI="${aiText.substring(0, 20)}..."`);
+
+        // Forward Chat to Google Sheets (Fire & Forgetish but waited for safety)
+        try {
+            await fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: 'chat', // Discriminator
+                    sessionId,
+                    userMessage: message,
+                    aiResponse: aiText,
+                    date: new Date().toISOString()
+                })
+            });
+        } catch (logErr) {
+            console.error('❌ Failed to log chat to Sheets:', logErr);
+            // Non-critical, continue
+        }
+
         res.json({ response: aiText });
     } catch (error) {
         console.error('API Error:', error.message?.substring(0, 200));
