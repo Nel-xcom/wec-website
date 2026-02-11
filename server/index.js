@@ -304,12 +304,24 @@ app.get('/api/analytics/dashboard', async (req, res) => {
     try {
         // This requires the Google Script to implement doGet() and return JSON
         const response = await fetch(GOOGLE_SHEETS_CHAT_URL);
-        if (!response.ok) throw new Error('Failed to fetch from sheets');
-        const data = await response.json();
+        const text = await response.text();
+
+        // Log the first 500 chars to debug HTML errors
+        if (!response.ok || text.trim().startsWith('<')) {
+            console.error('⚠️ Dashboard Fetch likely HTML/Error:', text.substring(0, 500));
+        }
+
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (jsonErr) {
+            throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+        }
+
         res.json(data);
     } catch (e) {
-        console.error('Dashboard Fetch Error:', e);
-        res.status(500).json({ error: 'Failed to load dashboard data. Ensure Google Script has doGet implemented.' });
+        console.error('Dashboard Fetch Error:', e.message);
+        res.status(500).json({ error: 'Failed to load dashboard data. Check server logs for HTML error.' });
     }
 });
 
