@@ -236,6 +236,7 @@ app.post('/api/chat', async (req, res) => {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        type: 'chat',
                         sessionId,
                         userMessage: message,
                         aiResponse: aiText,
